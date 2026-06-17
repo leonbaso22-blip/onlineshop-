@@ -1,0 +1,80 @@
+/* ============================================================
+   Produktkatalog — zentrale Datenquelle
+   Jedes Produkt: id, name, desc, price (in Cent), emoji,
+   gradient (für die CSS-Visualisierung), tag (optional)
+   ============================================================ */
+
+const PRODUCTS = [
+  {
+    id: "phone-15-pro",
+    name: "Lumen Phone 15 Pro",
+    desc: "Titan-Design, A17-Chip und das beste Pro-Kamerasystem.",
+    price: 119900,
+    emoji: "📱",
+    gradient: "linear-gradient(155deg, #5e5ce6, #bf5af2 50%, #ff375f)",
+    tag: "Neu",
+  },
+  {
+    id: "phone-15",
+    name: "Lumen Phone 15",
+    desc: "Leistungsstark, farbenfroh und für jeden Tag gemacht.",
+    price: 94900,
+    emoji: "📱",
+    gradient: "linear-gradient(155deg, #34c759, #30d158 50%, #64d2ff)",
+    tag: "",
+  },
+  {
+    id: "laptop-air",
+    name: "Lumen Laptop Air",
+    desc: "Unglaublich dünn, unglaublich leicht. Den ganzen Tag Akku.",
+    price: 129900,
+    emoji: "💻",
+    gradient: "linear-gradient(155deg, #a2845e, #d4b896)",
+    tag: "",
+  },
+  {
+    id: "laptop-pro",
+    name: "Lumen Laptop Pro 16″",
+    desc: "Maximale Power für Profis. M-Pro-Chip und Liquid-Display.",
+    price: 259900,
+    emoji: "💻",
+    gradient: "linear-gradient(155deg, #1d1d1f, #48484a)",
+    tag: "Pro",
+  },
+  {
+    id: "watch-ultra",
+    name: "Lumen Watch Ultra",
+    desc: "Robust, abenteuerlustig und mit präzisem GPS.",
+    price: 89900,
+    emoji: "⌚",
+    gradient: "linear-gradient(160deg, #ff6b35, #d62828)",
+    tag: "",
+  },
+  {
+    id: "watch-series",
+    name: "Lumen Watch Series 9",
+    desc: "Dein smarter Begleiter für Gesundheit und Fitness.",
+    price: 44900,
+    emoji: "⌚",
+    gradient: "linear-gradient(160deg, #ff2d55, #ff375f)",
+    tag: "",
+  },
+  {
+    id: "buds-pro",
+    name: "Lumen Buds Pro",
+    desc: "Aktive Geräuschunterdrückung und adaptiver Sound.",
+    price: 27900,
+    emoji: "🎧",
+    gradient: "radial-gradient(circle at 35% 30%, #fff, #d2d2d7 60%, #86868b)",
+    tag: "",
+  },
+  {
+    id: "tablet-pro",
+    name: "Lumen Tablet Pro",
+    desc: "Das ultimative Display-Erlebnis. Dünner als je zuvor.",
+    price: 109900,
+    emoji: "📟",
+    gradient: "linear-gradient(155deg, #0a84ff, #5e5ce6)",
+    tag: "Neu",
+  },
+];
