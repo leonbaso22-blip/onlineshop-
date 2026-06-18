@@ -1,0 +1,16 @@
+# Geheimnisse / lokale Umgebung
+.env
+.env.local
+*.key
+
+# Abhängigkeiten / Build
+node_modules/
+
+# Python-Cache
+__pycache__/
+*.pyc
+
+# Vorschau-Screenshots (lokal generiert)
+preview-*.png
+shop-*.png
+v2-*.png
