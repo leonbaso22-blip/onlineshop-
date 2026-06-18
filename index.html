@@ -3,36 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Lumen Store – Technik, die begeistert. Entdecke Smartphones, Laptops, Watches und mehr im minimalistischen Design." />
-  <title>Lumen Store</title>
+  <meta name="description" content="air up Store – Trinke Geschmack mit nichts als Wasser und Duft. Entdecke Starter-Sets, Flaschen, Geschmacks-Pods und Zubehör. 0 Zucker, 0 Kalorien." />
+  <meta name="theme-color" content="#ffffff" />
+  <title>air up · Trinke Geschmack mit nichts als Wasser</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="stylesheet" href="css/style.css" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%97%89%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 8 C50 8 80 45 80 65 a30 30 0 0 1 -60 0 C20 45 50 8 50 8 Z' fill='%2300b8a9'/%3E%3C/svg%3E" />
 </head>
 <body>
+  <!-- ===== Top-Banner ===== -->
+  <div class="topbar">
+    🚚 Kostenloser Versand ab 30&nbsp;€ · 🌱 0&nbsp;Zucker, 0&nbsp;Kalorien · ↩️ 30&nbsp;Tage Rückgabe
+  </div>
+
   <!-- ===== Navigation ===== -->
   <header class="nav" id="nav">
     <div class="nav__inner">
-      <a href="#" class="nav__logo" aria-label="Lumen Store Startseite">
-        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-          <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
-          <circle cx="12" cy="12" r="3" fill="currentColor"/>
+      <a href="#top" class="nav__logo" aria-label="air up Startseite">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path d="M12 2c0 0 7 8.5 7 13a7 7 0 0 1-14 0C5 10.5 12 2 12 2Z" fill="currentColor"/>
         </svg>
-        <span>Lumen</span>
+        <span>air up</span>
       </a>
 
       <nav class="nav__links" aria-label="Hauptnavigation">
-        <a href="#store">Store</a>
-        <a href="#phone">Phone</a>
-        <a href="#laptop">Laptop</a>
-        <a href="#watch">Watch</a>
-        <a href="#audio">Audio</a>
-        <a href="#zubehoer">Zubehör</a>
+        <a href="#sets">Starter-Sets</a>
+        <a href="#bottles">Flaschen</a>
+        <a href="#pods">Pods</a>
+        <a href="#accessories">Zubehör</a>
+        <a href="#how">So funktioniert's</a>
+        <a href="#sustainability">Nachhaltigkeit</a>
         <a href="#support">Support</a>
       </nav>
 
       <div class="nav__actions">
-        <button class="nav__icon" id="searchBtn" aria-label="Suchen">
+        <button class="nav__icon" id="searchBtn" aria-label="Produkte ansehen">
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
         <button class="nav__icon" id="cartBtn" aria-label="Warenkorb öffnen">
@@ -46,89 +51,215 @@
     </div>
   </header>
 
-  <main>
+  <main id="top">
     <!-- ===== Hero ===== -->
     <section class="hero" id="store">
       <div class="hero__content">
-        <h1 class="hero__title">Lumen Phone&nbsp;15&nbsp;Pro</h1>
-        <p class="hero__subtitle">Titan. So stark. So leicht. So Pro.</p>
+        <p class="hero__eyebrow">Neu denken, was Trinken kann</p>
+        <h1 class="hero__title">Trinke&nbsp;Geschmack.</h1>
+        <p class="hero__subtitle">Mit nichts als Wasser und Duft. 0&nbsp;Zucker, 0&nbsp;Kalorien, 0&nbsp;Süßstoff.</p>
         <div class="hero__links">
-          <a href="#phone" class="link-pill">Mehr erfahren</a>
-          <a href="#phone" class="link-arrow">Kaufen <span aria-hidden="true">›</span></a>
+          <a href="#sets" class="link-pill">Starter-Set entdecken</a>
+          <a href="#how" class="link-arrow">So funktioniert's <span aria-hidden="true">›</span></a>
         </div>
-        <div class="hero__visual" aria-hidden="true">
-          <div class="phone-mock">
-            <div class="phone-mock__notch"></div>
-            <div class="phone-mock__screen"></div>
-          </div>
-        </div>
+        <div class="hero__visual" id="heroVisual" aria-hidden="true"></div>
+        <div class="hero__scent" aria-hidden="true"><span></span><span></span><span></span></div>
       </div>
     </section>
 
-    <!-- ===== Hero zweispaltig ===== -->
+    <!-- ===== Benefits-Leiste ===== -->
+    <section class="benefits" aria-label="Vorteile">
+      <div class="benefits__inner">
+        <div class="benefit reveal"><strong>0</strong><span>Zucker</span></div>
+        <div class="benefit reveal"><strong>0</strong><span>Kalorien</span></div>
+        <div class="benefit reveal"><strong>0</strong><span>Süßstoff</span></div>
+        <div class="benefit reveal"><strong>40+</strong><span>Sorten</span></div>
+        <div class="benefit reveal"><strong>−90%</strong><span>Plastik</span></div>
+      </div>
+    </section>
+
+    <!-- ===== Duo: Generation 3 / Steel ===== -->
     <section class="duo">
-      <article class="duo__panel duo__panel--light">
-        <h2>Lumen Watch Ultra</h2>
-        <p>Bis ans Limit. Und darüber hinaus.</p>
+      <article class="duo__panel duo__panel--light reveal">
+        <h2>Generation 3</h2>
+        <p>Federleicht, BPA-frei, in vielen Farben.</p>
         <div class="duo__links">
-          <a href="#watch" class="link-arrow">Mehr erfahren <span aria-hidden="true">›</span></a>
-          <a href="#watch" class="link-arrow">Kaufen <span aria-hidden="true">›</span></a>
+          <a href="#bottles" class="link-arrow">Mehr erfahren <span aria-hidden="true">›</span></a>
+          <a href="#bottles" class="link-arrow">Kaufen <span aria-hidden="true">›</span></a>
         </div>
-        <div class="duo__visual duo__visual--watch" aria-hidden="true"></div>
+        <div class="duo__art" data-art="gen3" aria-hidden="true"></div>
       </article>
-      <article class="duo__panel duo__panel--dark">
-        <h2>Lumen Buds Pro</h2>
-        <p>Adaptiver Sound. Pure Stille.</p>
+      <article class="duo__panel duo__panel--dark reveal">
+        <h2>Steel Edition</h2>
+        <p>Isoliert. Hält dein Wasser bis zu 12&nbsp;Std. eiskalt.</p>
         <div class="duo__links">
-          <a href="#audio" class="link-arrow link-arrow--light">Mehr erfahren <span aria-hidden="true">›</span></a>
-          <a href="#audio" class="link-arrow link-arrow--light">Kaufen <span aria-hidden="true">›</span></a>
+          <a href="#bottles" class="link-arrow link-arrow--light">Mehr erfahren <span aria-hidden="true">›</span></a>
+          <a href="#bottles" class="link-arrow link-arrow--light">Kaufen <span aria-hidden="true">›</span></a>
         </div>
-        <div class="duo__visual duo__visual--buds" aria-hidden="true"></div>
+        <div class="duo__art" data-art="steel" aria-hidden="true"></div>
       </article>
     </section>
 
-    <!-- ===== Produkt-Sektionen ===== -->
-    <section class="catalog" id="catalogRoot">
-      <div class="catalog__head" id="phone">
-        <h2>Store. Der beste Weg, Lumen zu kaufen.</h2>
-        <p>Finde genau das Produkt, das zu dir passt.</p>
+    <!-- ===== So funktioniert's ===== -->
+    <section class="how" id="how">
+      <div class="how__head reveal">
+        <h2>So einfach funktioniert's</h2>
+        <p>Dein Gehirn schmeckt über den Duft. Wir nennen das <em>Scentaste</em>™.</p>
       </div>
-      <!-- Produkte werden per JS gerendert -->
-      <div class="catalog__grid" id="productGrid" aria-live="polite"></div>
+      <div class="how__steps">
+        <div class="step reveal">
+          <div class="step__num">1</div>
+          <div class="step__icon" data-art="how1" aria-hidden="true"></div>
+          <h3>Pod aufstecken</h3>
+          <p>Stecke deinen Lieblings-Pod oben auf die Flasche.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step__num">2</div>
+          <div class="step__icon" data-art="how2" aria-hidden="true"></div>
+          <h3>Wasser einfüllen</h3>
+          <p>Fülle die Flasche mit ganz normalem Leitungswasser.</p>
+        </div>
+        <div class="step reveal">
+          <div class="step__num">3</div>
+          <div class="step__icon" data-art="how3" aria-hidden="true"></div>
+          <h3>Geschmack erleben</h3>
+          <p>Trink durch den Strohhalm – der Duft macht den Geschmack.</p>
+        </div>
+      </div>
     </section>
 
-    <!-- ===== Banner ===== -->
+    <!-- ===== Produkt-Katalog ===== -->
+    <section class="catalog" id="catalogRoot">
+      <div class="catalog__head reveal" id="sets">
+        <h2>Der Shop.</h2>
+        <p>Sets, Flaschen, Pods und Zubehör – finde, was zu dir passt.</p>
+      </div>
+      <div class="tabs" id="catTabs" role="tablist" aria-label="Produktkategorien"></div>
+      <div class="catalog__grid" id="productGrid" aria-live="polite"></div>
+      <!-- Anker für die Navigation -->
+      <span id="bottles" class="anchor"></span>
+      <span id="pods" class="anchor"></span>
+      <span id="accessories" class="anchor"></span>
+    </section>
+
+    <!-- ===== Promo-Banner ===== -->
     <section class="promo">
-      <div class="promo__content">
-        <h2>Kostenlose Lieferung.</h2>
-        <p>Schnelle, kostenlose Lieferung für jede Bestellung – direkt zu dir nach Hause.</p>
-        <a href="#catalogRoot" class="link-pill">Jetzt einkaufen</a>
+      <div class="promo__content reveal">
+        <h2>Ein Pod ersetzt bis zu 9&nbsp;PET-Flaschen.</h2>
+        <p>Spar dir das Schleppen, spar der Umwelt das Plastik – und genieß dabei vollen Geschmack.</p>
+        <a href="#sets" class="link-pill">Jetzt nachhaltig trinken</a>
+      </div>
+    </section>
+
+    <!-- ===== Nachhaltigkeit ===== -->
+    <section class="eco" id="sustainability">
+      <div class="eco__grid">
+        <div class="eco__text reveal">
+          <h2>Gut für dich.<br>Besser für den Planeten.</h2>
+          <p>air up ersetzt zuckerhaltige Getränke und Einweg-Plastik. Weniger Müll, weniger Schleppen, voller Geschmack – aus deinem Wasserhahn.</p>
+          <ul class="eco__list">
+            <li>♻️ Recycelbare Pods &amp; nachfüllbare Flaschen</li>
+            <li>🚰 Trink einfach Leitungswasser</li>
+            <li>🌍 Klimaneutraler Versand</li>
+          </ul>
+        </div>
+        <div class="eco__stats">
+          <div class="eco__stat reveal"><strong>9×</strong><span>weniger Einwegflaschen pro Pod</span></div>
+          <div class="eco__stat reveal"><strong>5 Mrd.</strong><span>eingesparte Plastikflaschen (Ziel 2030)</span></div>
+          <div class="eco__stat reveal"><strong>100%</strong><span>klimaneutraler Versand</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Reviews ===== -->
+    <section class="reviews">
+      <div class="reviews__head reveal">
+        <h2>Über 2 Millionen Menschen trinken air up</h2>
+        <div class="reviews__stars" aria-label="4,8 von 5 Sternen">★★★★★ <span>4,8 / 5 · 38.420 Bewertungen</span></div>
+      </div>
+      <div class="reviews__grid">
+        <figure class="review reveal">
+          <div class="review__stars">★★★★★</div>
+          <blockquote>„Ich trinke endlich genug Wasser – und es schmeckt nach Cola, ohne Zucker. Verrückt, aber es funktioniert!“</blockquote>
+          <figcaption>— Lena M.</figcaption>
+        </figure>
+        <figure class="review reveal">
+          <div class="review__stars">★★★★★</div>
+          <blockquote>„Die Steel-Flasche hält mein Wasser den ganzen Tag eiskalt. Beste Anschaffung des Jahres.“</blockquote>
+          <figcaption>— Jonas K.</figcaption>
+        </figure>
+        <figure class="review reveal">
+          <div class="review__stars">★★★★☆</div>
+          <blockquote>„Mango-Maracuja ist mein Favorit. Endlich kein Schleppen von Wasserkisten mehr.“</blockquote>
+          <figcaption>— Aylin T.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="faq" id="support">
+      <div class="faq__head reveal">
+        <h2>Häufige Fragen</h2>
+      </div>
+      <div class="faq__list">
+        <div class="faq__item reveal">
+          <button class="faq__q" aria-expanded="false">Wie kann Wasser nach Frucht schmecken? <span class="faq__plus" aria-hidden="true"></span></button>
+          <div class="faq__a"><p>Über den Pod strömt beim Trinken ein feiner Duft in die Nase – retronasal. Dein Gehirn interpretiert das als Geschmack. Im Wasser selbst ist nichts außer Wasser.</p></div>
+        </div>
+        <div class="faq__item reveal">
+          <button class="faq__q" aria-expanded="false">Wie lange hält ein Pod? <span class="faq__plus" aria-hidden="true"></span></button>
+          <div class="faq__a"><p>Ein Pod reicht für ca. 5&nbsp;Liter Wasser – das sind rund 7&nbsp;Flaschenfüllungen pro Pod.</p></div>
+        </div>
+        <div class="faq__item reveal">
+          <button class="faq__q" aria-expanded="false">Ist das wirklich ohne Zucker und Kalorien? <span class="faq__plus" aria-hidden="true"></span></button>
+          <div class="faq__a"><p>Ja. 0&nbsp;Zucker, 0&nbsp;Kalorien, 0&nbsp;Süßstoff. Du trinkst pures Wasser – der Geschmack kommt nur über den Duft.</p></div>
+        </div>
+        <div class="faq__item reveal">
+          <button class="faq__q" aria-expanded="false">Wie schnell wird geliefert? <span class="faq__plus" aria-hidden="true"></span></button>
+          <div class="faq__a"><p>Versand innerhalb von 1–3&nbsp;Werktagen, klimaneutral. Ab 30&nbsp;€ Bestellwert versandkostenfrei.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Newsletter ===== -->
+    <section class="newsletter">
+      <div class="newsletter__inner reveal">
+        <h2>10&nbsp;% auf deine erste Bestellung</h2>
+        <p>Abonniere den Newsletter und sichere dir deinen Willkommens-Gutschein.</p>
+        <form class="newsletter__form" id="newsletterForm">
+          <input type="email" required placeholder="deine@email.de" aria-label="E-Mail-Adresse" />
+          <button type="submit" class="btn">Gutschein sichern</button>
+        </form>
+        <p class="newsletter__note">Jederzeit abbestellbar. Demo-Formular – es werden keine Daten gesendet.</p>
       </div>
     </section>
   </main>
 
   <!-- ===== Footer ===== -->
-  <footer class="footer" id="support">
+  <footer class="footer">
     <div class="footer__inner">
       <div class="footer__cols">
         <div class="footer__col">
-          <h3>Produkte</h3>
-          <a href="#phone">Phone</a><a href="#laptop">Laptop</a><a href="#watch">Watch</a><a href="#audio">Audio</a>
+          <h3>Shop</h3>
+          <a href="#sets">Starter-Sets</a><a href="#bottles">Flaschen</a><a href="#pods">Pods</a><a href="#accessories">Zubehör</a>
         </div>
         <div class="footer__col">
-          <h3>Store</h3>
-          <a href="#catalogRoot">Angebote</a><a href="#catalogRoot">Bestellstatus</a><a href="#catalogRoot">Finanzierung</a>
+          <h3>air up</h3>
+          <a href="#how">So funktioniert's</a><a href="#sustainability">Nachhaltigkeit</a><a href="#reviews">Bewertungen</a><a href="#">Über uns</a>
         </div>
         <div class="footer__col">
           <h3>Service</h3>
-          <a href="#support">Support</a><a href="#support">Garantie</a><a href="#support">Reparatur</a>
+          <a href="#support">Hilfe &amp; FAQ</a><a href="#">Versand &amp; Rückgabe</a><a href="#">Kontakt</a><a href="#">Bestellstatus</a>
         </div>
         <div class="footer__col">
-          <h3>Über Lumen</h3>
-          <a href="#">Newsroom</a><a href="#">Karriere</a><a href="#">Nachhaltigkeit</a>
+          <h3>Rechtliches</h3>
+          <a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">AGB</a><a href="#">Widerruf</a>
         </div>
       </div>
-      <p class="footer__legal">© 2026 Lumen Store. Alle Preise inkl. MwSt. Dies ist ein fiktiver Demo-Shop.</p>
+      <p class="footer__legal">
+        © <span id="year">2026</span> air up Store · Alle Preise inkl. MwSt. zzgl. Versand.<br>
+        Dies ist ein fiktiver Demo-Shop zu Test-/Lernzwecken und steht in keiner Verbindung zur air up group GmbH. Es findet keine echte Zahlung statt.
+      </p>
     </div>
   </footer>
 
@@ -142,7 +273,7 @@
     <div class="cart__items" id="cartItems"></div>
     <div class="cart__empty" id="cartEmpty">
       <p>Dein Warenkorb ist leer.</p>
-      <span>Entdecke unsere Produkte und füge etwas hinzu.</span>
+      <span>Entdecke unsere Sets, Flaschen und Pods.</span>
     </div>
     <div class="cart__foot" id="cartFoot" hidden>
       <div class="cart__total">
@@ -150,11 +281,24 @@
         <strong id="cartTotal">0,00&nbsp;€</strong>
       </div>
       <button class="btn btn--block" id="checkoutBtn">Zur Kasse</button>
-      <p class="cart__note">Kostenloser Versand · 14 Tage Rückgabe</p>
+      <p class="cart__note">Kostenloser Versand ab 30&nbsp;€ · 30 Tage Rückgabe</p>
     </div>
   </aside>
 
+  <script src="js/illustrations.js"></script>
   <script src="js/products.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    /* Dekorative Illustrationen außerhalb des Katalogs einsetzen */
+    (function () {
+      const put = (sel, svg) => { const el = document.querySelector(sel); if (el) el.innerHTML = svg; };
+      put("#heroVisual", ILLU.bottle({ body: "#5ec8c8", cap: "#243b3f", pod: "#ff7a59" }));
+      put('[data-art="gen3"]', ILLU.bottle({ body: "#b9a7e6", cap: "#4a3f6b", pod: "#ffc233" }));
+      put('[data-art="steel"]', ILLU.bottle({ metallic: true, cap: "#1b1d20", pod: "#00b8a9" }));
+      put('[data-art="how1"]', ILLU.pods({ color: "#ff9f1c" }));
+      put('[data-art="how2"]', ILLU.bottle({ body: "#5ec8c8", cap: "#243b3f", pod: "#ff7a59" }));
+      put('[data-art="how3"]', ILLU.lid({ cap: "#243b3f", pod: "#ff7a59" }));
+    })();
+  </script>
 </body>
 </html>

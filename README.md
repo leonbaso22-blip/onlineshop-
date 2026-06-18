@@ -1,26 +1,32 @@
-# Lumen Store 🛍️
+# air up Store 💧
 
-Ein moderner Online-Shop im minimalistischen Design – inspiriert vom Apple-Look.
-Reines HTML, CSS und JavaScript, **ohne Build-Schritt oder Abhängigkeiten**.
+Ein professioneller Demo-Online-Shop für **air up** im minimalistischen Apple-Look.
+Reines HTML, CSS und JavaScript – **ohne Build-Schritt, ohne Abhängigkeiten, komplett offline lauffähig**.
+
+> Demo-/Testprojekt: Dieser Shop ist fiktiv, steht in keiner Verbindung zur air up group GmbH und wickelt keine echten Zahlungen ab.
 
 ## Features
 
 - 🍏 **Apple-inspiriertes Design** – große Typografie, viel Weißraum, blur-Navigation, sanfte Animationen
+- 🖼️ **Echte „Produktbilder“** – handgebaute, gestochen scharfe **SVG-Illustrationen** von Flaschen, Pods, Sets & Zubehör (keine externen Bilder nötig)
 - 🛒 **Funktionierender Warenkorb** – Hinzufügen, Menge ändern, entfernen; bleibt per `localStorage` erhalten
+- 🗂️ **Kategorie-Filter** – Starter-Sets, Flaschen, Pods, Zubehör per Tab
+- 🧪 **Vollständige Shop-Sektionen** – Hero, „So funktioniert's", Nachhaltigkeit, Reviews, FAQ-Accordion, Newsletter
 - 📱 **Voll responsiv** – Desktop, Tablet und Mobil inkl. Burger-Menü
-- ✨ **Scroll-Animationen** & Toast-Benachrichtigungen
+- ✨ **Scroll-Animationen**, Toast-Benachrichtigungen, Warenkorb-Animation
 - ♿ **Barrierearm** – ARIA-Labels, Tastatur (ESC schließt den Warenkorb), `prefers-reduced-motion`
 
 ## Projektstruktur
 
 ```
 .
-├── index.html        # Seitenstruktur
+├── index.html            # Seitenstruktur (alle Sektionen)
 ├── css/
-│   └── style.css     # gesamtes Styling
+│   └── style.css         # gesamtes Styling (air-up-Theme)
 └── js/
-    ├── products.js   # Produktkatalog (Datenquelle)
-    └── main.js       # Warenkorb- & UI-Logik
+    ├── illustrations.js  # SVG-Illustrationen (Flaschen, Pods, Sets, Zubehör)
+    ├── products.js       # Produktkatalog (Datenquelle)
+    └── main.js           # Warenkorb-, Filter- & UI-Logik
 ```
 
 ## Starten
@@ -30,7 +36,6 @@ Einfach `index.html` im Browser öffnen.
 Oder mit einem lokalen Server (empfohlen):
 
 ```bash
-# Python
 python3 -m http.server 8000
 # danach http://localhost:8000 öffnen
 ```
@@ -41,14 +46,28 @@ Alle Produkte liegen in `js/products.js`. Neues Produkt = neuer Eintrag im Array
 
 ```js
 {
-  id: "neue-id",          // eindeutig
-  name: "Produktname",
-  desc: "Kurzbeschreibung",
-  price: 99900,           // Preis in Cent (999,00 €)
-  emoji: "📦",            // Platzhalter-Visualisierung
-  gradient: "linear-gradient(155deg, #5e5ce6, #ff375f)",
-  tag: "Neu"              // optionales Label (oder "")
+  id: "pods-limette",          // eindeutig
+  name: "Pods – Limette",
+  desc: "3er-Pack. Spritzig-frische Limette.",
+  price: 995,                  // Preis in Cent (9,95 €)
+  oldPrice: 1190,              // optionaler Streichpreis
+  category: "pods",            // sets | bottles | pods | accessories
+  tag: "Neu",                  // optionales Label
+  badge: "🍈",                 // optionales Emoji (z. B. Frucht)
+  art: { type: "pods", color: "#b5e655" }  // Illustration
 }
 ```
 
-> Hinweis: Dies ist ein fiktiver Demo-Shop. Es findet keine echte Zahlung statt.
+### Illustrationen (`art`)
+
+Die „Bilder" werden aus `art` generiert (siehe `js/illustrations.js`):
+
+| `type`     | Parameter                              | Ergebnis                  |
+|------------|----------------------------------------|---------------------------|
+| `bottle`   | `body`, `cap`, `pod`, `metallic`       | Flasche                   |
+| `set`      | `body`, `cap`, `pod`, `metallic`       | Flasche + Pods            |
+| `pods`     | `color`                                | 3er-Pack Geschmacks-Pods  |
+| `strap`    | `color`                                | Trageband                 |
+| `brush`    | –                                      | Reinigungsbürste          |
+| `lid`      | `cap`, `pod`                           | Ersatzdeckel              |
+```
