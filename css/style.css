@@ -4,17 +4,21 @@
 
 :root {
   --black: #1d1d1f;
-  --gray-text: #6e6e73;
+  --gray-text: #5b5b60;        /* dunkler für AA-Kontrast (≥4.5:1) */
   --gray-bg: #f5f5f7;
   --white: #ffffff;
-  --brand: #00b8a9;        /* air up Türkis */
-  --brand-dark: #009b8e;
-  --brand-tint: #e4f7f4;
+  --brand: #03857a;            /* tiefes Türkis: Weiß-Text erfüllt 4.5:1 */
+  --brand-dark: #026b62;       /* Hover / Text-Links (höherer Kontrast) */
+  --brand-bright: #00c4b4;     /* helles Türkis – nur Dekor (Verläufe, Akzente) */
+  --brand-tint: #e3f6f3;
   --coral: #ff7a59;
+  --ring: #03857a;             /* Fokus-Ring */
   --radius: 18px;
   --nav-h: 48px;
   --max-w: 1024px;
   --ease: cubic-bezier(0.28, 0.11, 0.32, 1);
+  --font-head: "Rubik", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-body: "Nunito Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,13 +26,16 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
-    "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: var(--font-body);
   color: var(--black);
   background: var(--white);
-  line-height: 1.4;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, .hero__title, .card__name, .benefit strong, .eco__stat strong {
+  font-family: var(--font-head);
 }
 
 a { color: var(--brand-dark); text-decoration: none; }
@@ -36,6 +43,30 @@ a:hover { text-decoration: underline; }
 img, svg { max-width: 100%; display: block; }
 
 .anchor { position: absolute; }
+
+/* ===== Barrierefreiheit: Fokus-Ringe & Skip-Link ===== */
+:where(a, button, input, [tabindex]):focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+.skip-link {
+  position: fixed;
+  top: -60px;
+  left: 12px;
+  z-index: 400;
+  background: var(--brand);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 0 0 12px 12px;
+  font-weight: 600;
+  transition: top 0.2s var(--ease);
+}
+.skip-link:focus { top: 0; text-decoration: none; }
+
+/* Tippverzögerung reduzieren + Zeiger auf klickbaren Elementen */
+button, .link-pill, .link-arrow, .tab, a[href] { touch-action: manipulation; }
+button:not(:disabled), .tab, [role="tab"] { cursor: pointer; }
 
 /* ===== Top-Banner ===== */
 .topbar {
@@ -102,6 +133,8 @@ img, svg { max-width: 100%; display: block; }
   color: var(--black);
   cursor: pointer;
   padding: 0;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   opacity: 0.85;
@@ -112,8 +145,8 @@ img, svg { max-width: 100%; display: block; }
 @keyframes bump { 0%,100%{transform:scale(1)} 35%{transform:scale(1.35)} }
 .nav__badge {
   position: absolute;
-  top: -7px;
-  right: -9px;
+  top: 3px;
+  right: 2px;
   background: var(--brand);
   color: #fff;
   font-size: 10px;
@@ -175,7 +208,7 @@ img, svg { max-width: 100%; display: block; }
 .hero__scent span {
   position: absolute; left: 50%; bottom: 40px;
   width: 10px; height: 10px; border-radius: 50%;
-  background: var(--brand); opacity: 0;
+  background: var(--brand-bright); opacity: 0;
   animation: rise 3.6s var(--ease) infinite;
 }
 .hero__scent span:nth-child(2) { margin-left: -26px; animation-delay: 1.2s; }
@@ -359,8 +392,8 @@ img, svg { max-width: 100%; display: block; }
   color: var(--black);
   font-family: inherit;
   font-size: 15px;
-  font-weight: 500;
-  padding: 9px 18px;
+  font-weight: 600;
+  padding: 12px 20px;
   border-radius: 980px;
   cursor: pointer;
   transition: background .2s, color .2s;
@@ -592,10 +625,11 @@ img, svg { max-width: 100%; display: block; }
 .cart-item__price { font-size: 14px; color: var(--gray-text); margin-top: 2px; }
 .cart-item__qty { display: flex; align-items: center; gap: 10px; margin-top: 8px; }
 .cart-item__qty button {
-  width: 24px; height: 24px; border-radius: 50%;
+  width: 32px; height: 32px; border-radius: 50%;
   border: 1px solid #d2d2d7; background: #fff; cursor: pointer;
-  font-size: 15px; line-height: 1; color: var(--black);
+  font-size: 17px; line-height: 1; color: var(--black);
   display: grid; place-items: center;
+  transition: background .15s, border-color .15s;
 }
 .cart-item__qty button:hover { background: var(--gray-bg); }
 .cart-item__remove { background: none; border: none; color: var(--brand-dark); font-size: 13px; cursor: pointer; align-self: flex-start; padding: 0; }

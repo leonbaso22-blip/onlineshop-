@@ -55,8 +55,8 @@
   function renderProducts() {
     grid.innerHTML = visibleProducts()
       .map(
-        (p) => `
-      <article class="card reveal" data-id="${p.id}">
+        (p, i) => `
+      <article class="card reveal" data-id="${p.id}" style="transition-delay:${Math.min(i, 7) * 45}ms">
         ${p.tag ? `<span class="card__tag">${p.tag}</span>` : `<span class="card__tag"></span>`}
         <div class="card__visual">
           ${renderArt(p.art)}
@@ -211,6 +211,13 @@
               e.target.classList.add("in");
               countUpIn(e.target);
               io.unobserve(e.target);
+              // Stagger-Verzögerung nach dem Einblenden entfernen,
+              // damit Hover-Effekte sofort reagieren
+              e.target.addEventListener(
+                "transitionend",
+                () => (e.target.style.transitionDelay = ""),
+                { once: true }
+              );
             }
           });
         },
