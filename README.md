@@ -24,10 +24,39 @@ Reines HTML, CSS und JavaScript – **ohne Build-Schritt, ohne Abhängigkeiten, 
 ├── css/
 │   └── style.css         # gesamtes Styling (air-up-Theme)
 └── js/
+    ├── site-config.js    # 👉 HIER Business-Daten & Foto-Links eintragen
     ├── illustrations.js  # SVG-Illustrationen (Flaschen, Pods, Sets, Zubehör)
     ├── products.js       # Produktkatalog (Datenquelle)
     └── main.js           # Warenkorb-, Filter- & UI-Logik
 ```
+
+## ⭐ Dein Business eintragen
+
+Öffne `js/site-config.js` und trage oben deine Daten ein:
+
+```js
+business: {
+  name: "Dein Studio",                        // dein Business-/Künstlername
+  tagline: "Moderne Websites & Online-Shops", // kurzer Slogan
+  email: "hallo@deinstudio.de",               // Kontakt-E-Mail
+  phone: "",                                  // optional
+  website: "#",                               // optional, z. B. "https://deinstudio.de"
+}
+```
+
+Diese Angaben erscheinen **dezent** oben in der Leiste („Website erstellt von …")
+und im Footer als kleiner Werbeblock mit Kontakt.
+
+## 📸 Echte Fotos (Bilder tauschen)
+
+Die Stimmungs-Fotos (Hero, Lifestyle, Wasser …) liegen ebenfalls in
+`js/site-config.js` unter `photos`. Jedes Foto liegt über einem Farbverlauf –
+lädt ein Bild nicht, bleibt der Verlauf sichtbar (sieht trotzdem gut aus).
+Zum Tauschen einfach eine andere Bild-URL einsetzen (z. B. von
+[unsplash.com](https://unsplash.com) – kostenlos & frei nutzbar).
+
+> Hinweis: Die Produktbilder selbst sind weiterhin scharfe SVG-Illustrationen
+> und funktionieren immer (auch offline).
 
 ## Starten
 

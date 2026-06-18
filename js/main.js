@@ -13,6 +13,8 @@
   const STORAGE_KEY = "airup-cart";
   const euro = (cents) =>
     (cents / 100).toLocaleString("de-DE", { style: "currency", currency: "EUR" });
+  const REDUCE =
+    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   // -------- State --------
   let cart = loadCart();
@@ -207,6 +209,7 @@
           entries.forEach((e) => {
             if (e.isIntersecting) {
               e.target.classList.add("in");
+              countUpIn(e.target);
               io.unobserve(e.target);
             }
           });
@@ -215,6 +218,86 @@
       );
     }
     document.querySelectorAll(".reveal:not(.in)").forEach((el) => io.observe(el));
+  }
+
+  // -------- Zähl-Animation --------
+  function countUpIn(scope) {
+    scope.querySelectorAll("[data-count]").forEach((el) => {
+      if (el.dataset.done) return;
+      el.dataset.done = "1";
+      const target = parseFloat(el.dataset.count);
+      const prefix = el.dataset.prefix || "";
+      const suffix = el.dataset.suffix || "";
+      if (REDUCE) {
+        el.textContent = prefix + target + suffix;
+        return;
+      }
+      const dur = 1100;
+      const start = performance.now();
+      const tick = (now) => {
+        const p = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = prefix + Math.round(target * eased) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    });
+  }
+
+  // -------- Echte Fotos als Hintergründe setzen --------
+  function applyPhotos() {
+    if (typeof SITE === "undefined" || !SITE.photos) return;
+    const root = document.documentElement.style;
+    Object.entries(SITE.photos).forEach(([key, url]) => {
+      if (url) root.setProperty(`--img-${key}`, `url("${url}")`);
+    });
+  }
+
+  // -------- Dezente Business-Werbung einblenden --------
+  function applyBusiness() {
+    if (typeof SITE === "undefined" || !SITE.business || !SITE.business.name) return;
+    const b = SITE.business;
+    const primary =
+      b.website && b.website !== "#" ? b.website : b.email ? "mailto:" + b.email : "#";
+
+    const top = document.getElementById("bizTop");
+    if (top) {
+      top.innerHTML = `✨ Website erstellt von <strong>${b.name}</strong>`;
+      top.href = primary;
+      top.hidden = false;
+    }
+
+    const foot = document.getElementById("bizFooter");
+    if (foot) {
+      const contact = [];
+      if (b.email) contact.push(`<a href="mailto:${b.email}">${b.email}</a>`);
+      if (b.phone)
+        contact.push(`<a href="tel:${b.phone.replace(/\s+/g, "")}">${b.phone}</a>`);
+      if (b.website && b.website !== "#")
+        contact.push(`<a href="${b.website}" target="_blank" rel="noopener">${b.website.replace(/^https?:\/\//, "")}</a>`);
+      foot.innerHTML = `
+        <strong class="footer__credit-title">Gefällt dir diese Website?</strong>
+        <span>Diese Demo wurde gestaltet von <strong>${b.name}</strong>${b.tagline ? " · " + b.tagline : ""}.
+        So eine Seite willst du auch?${contact.length ? " " + contact.join(" · ") : ""}</span>`;
+      foot.hidden = false;
+    }
+  }
+
+  // -------- Flavour-Laufband --------
+  function buildTicker() {
+    const track = document.getElementById("tickerTrack");
+    if (!track) return;
+    const flavors = PRODUCTS.filter((p) => p.category === "pods" && p.badge).map((p) => {
+      const name = p.name.replace(/^Pods\s*[–-]\s*/, "");
+      return `<span class="ticker__item">${p.badge}&nbsp;${name}</span>`;
+    });
+    const extras = [
+      `<span class="ticker__item">💧 0 Zucker</span>`,
+      `<span class="ticker__item">🌱 0 Kalorien</span>`,
+      `<span class="ticker__item">♻️ Weniger Plastik</span>`,
+    ];
+    const content = flavors.concat(extras).join("");
+    track.innerHTML = content + content; // verdoppeln für nahtlose Schleife
   }
 
   // -------- Mobile-Menü --------
@@ -295,6 +378,9 @@
   });
 
   // -------- Init --------
+  applyPhotos();
+  applyBusiness();
+  buildTicker();
   renderTabs();
   renderProducts();
   updateCartUI();

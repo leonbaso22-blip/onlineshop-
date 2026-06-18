@@ -6,14 +6,15 @@
   <meta name="description" content="air up Store – Trinke Geschmack mit nichts als Wasser und Duft. Entdecke Starter-Sets, Flaschen, Geschmacks-Pods und Zubehör. 0 Zucker, 0 Kalorien." />
   <meta name="theme-color" content="#ffffff" />
   <title>air up · Trinke Geschmack mit nichts als Wasser</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 8 C50 8 80 45 80 65 a30 30 0 0 1 -60 0 C20 45 50 8 50 8 Z' fill='%2300b8a9'/%3E%3C/svg%3E" />
 </head>
 <body>
   <!-- ===== Top-Banner ===== -->
   <div class="topbar">
-    🚚 Kostenloser Versand ab 30&nbsp;€ · 🌱 0&nbsp;Zucker, 0&nbsp;Kalorien · ↩️ 30&nbsp;Tage Rückgabe
+    <span class="topbar__msg">🚚 Kostenloser Versand ab 30&nbsp;€ · 🌱 0&nbsp;Zucker, 0&nbsp;Kalorien · ↩️ 30&nbsp;Tage Rückgabe</span>
+    <a class="topbar__biz" id="bizTop" href="#" hidden></a>
   </div>
 
   <!-- ===== Navigation ===== -->
@@ -53,16 +54,16 @@
 
   <main id="top">
     <!-- ===== Hero ===== -->
-    <section class="hero" id="store">
+    <section class="hero hero--photo" id="store">
       <div class="hero__content">
-        <p class="hero__eyebrow">Neu denken, was Trinken kann</p>
-        <h1 class="hero__title">Trinke&nbsp;Geschmack.</h1>
-        <p class="hero__subtitle">Mit nichts als Wasser und Duft. 0&nbsp;Zucker, 0&nbsp;Kalorien, 0&nbsp;Süßstoff.</p>
-        <div class="hero__links">
-          <a href="#sets" class="link-pill">Starter-Set entdecken</a>
+        <p class="hero__eyebrow reveal">Neu denken, was Trinken kann</p>
+        <h1 class="hero__title reveal">Trinke&nbsp;Geschmack.</h1>
+        <p class="hero__subtitle reveal">Mit nichts als Wasser und Duft. 0&nbsp;Zucker, 0&nbsp;Kalorien, 0&nbsp;Süßstoff.</p>
+        <div class="hero__links reveal">
+          <a href="#sets" class="link-pill link-pill--shine">Starter-Set entdecken</a>
           <a href="#how" class="link-arrow">So funktioniert's <span aria-hidden="true">›</span></a>
         </div>
-        <div class="hero__visual" id="heroVisual" aria-hidden="true"></div>
+        <div class="hero__visual float" id="heroVisual" aria-hidden="true"></div>
         <div class="hero__scent" aria-hidden="true"><span></span><span></span><span></span></div>
       </div>
     </section>
@@ -73,9 +74,14 @@
         <div class="benefit reveal"><strong>0</strong><span>Zucker</span></div>
         <div class="benefit reveal"><strong>0</strong><span>Kalorien</span></div>
         <div class="benefit reveal"><strong>0</strong><span>Süßstoff</span></div>
-        <div class="benefit reveal"><strong>40+</strong><span>Sorten</span></div>
-        <div class="benefit reveal"><strong>−90%</strong><span>Plastik</span></div>
+        <div class="benefit reveal"><strong data-count="40" data-suffix="+">40+</strong><span>Sorten</span></div>
+        <div class="benefit reveal"><strong data-count="90" data-prefix="−" data-suffix="%">−90%</strong><span>Plastik</span></div>
       </div>
+    </section>
+
+    <!-- ===== Flavour-Laufband ===== -->
+    <section class="ticker" aria-hidden="true">
+      <div class="ticker__track" id="tickerTrack"></div>
     </section>
 
     <!-- ===== Duo: Generation 3 / Steel ===== -->
@@ -87,7 +93,7 @@
           <a href="#bottles" class="link-arrow">Mehr erfahren <span aria-hidden="true">›</span></a>
           <a href="#bottles" class="link-arrow">Kaufen <span aria-hidden="true">›</span></a>
         </div>
-        <div class="duo__art" data-art="gen3" aria-hidden="true"></div>
+        <div class="duo__art float" data-art="gen3" aria-hidden="true"></div>
       </article>
       <article class="duo__panel duo__panel--dark reveal">
         <h2>Steel Edition</h2>
@@ -96,7 +102,7 @@
           <a href="#bottles" class="link-arrow link-arrow--light">Mehr erfahren <span aria-hidden="true">›</span></a>
           <a href="#bottles" class="link-arrow link-arrow--light">Kaufen <span aria-hidden="true">›</span></a>
         </div>
-        <div class="duo__art" data-art="steel" aria-hidden="true"></div>
+        <div class="duo__art float" data-art="steel" aria-hidden="true"></div>
       </article>
     </section>
 
@@ -128,6 +134,15 @@
       </div>
     </section>
 
+    <!-- ===== Lifestyle-Band (echtes Foto) ===== -->
+    <section class="band band--lifestyle" id="bandLifestyle">
+      <div class="band__content reveal">
+        <h2>Mehr trinken.<br>Ohne schlechtes Gewissen.</h2>
+        <p>Voller Geschmack, null Zucker – dein Begleiter für Büro, Sport und unterwegs.</p>
+        <a href="#sets" class="link-pill">Jetzt starten</a>
+      </div>
+    </section>
+
     <!-- ===== Produkt-Katalog ===== -->
     <section class="catalog" id="catalogRoot">
       <div class="catalog__head reveal" id="sets">
@@ -136,14 +151,13 @@
       </div>
       <div class="tabs" id="catTabs" role="tablist" aria-label="Produktkategorien"></div>
       <div class="catalog__grid" id="productGrid" aria-live="polite"></div>
-      <!-- Anker für die Navigation -->
       <span id="bottles" class="anchor"></span>
       <span id="pods" class="anchor"></span>
       <span id="accessories" class="anchor"></span>
     </section>
 
-    <!-- ===== Promo-Banner ===== -->
-    <section class="promo">
+    <!-- ===== Promo-Banner (echtes Foto) ===== -->
+    <section class="promo band--pour">
       <div class="promo__content reveal">
         <h2>Ein Pod ersetzt bis zu 9&nbsp;PET-Flaschen.</h2>
         <p>Spar dir das Schleppen, spar der Umwelt das Plastik – und genieß dabei vollen Geschmack.</p>
@@ -164,15 +178,15 @@
           </ul>
         </div>
         <div class="eco__stats">
-          <div class="eco__stat reveal"><strong>9×</strong><span>weniger Einwegflaschen pro Pod</span></div>
-          <div class="eco__stat reveal"><strong>5 Mrd.</strong><span>eingesparte Plastikflaschen (Ziel 2030)</span></div>
-          <div class="eco__stat reveal"><strong>100%</strong><span>klimaneutraler Versand</span></div>
+          <div class="eco__stat reveal"><strong data-count="9" data-suffix="×">9×</strong><span>weniger Einwegflaschen pro Pod</span></div>
+          <div class="eco__stat reveal"><strong>5&nbsp;Mrd.</strong><span>eingesparte Plastikflaschen (Ziel 2030)</span></div>
+          <div class="eco__stat reveal"><strong data-count="100" data-suffix="%">100%</strong><span>klimaneutraler Versand</span></div>
         </div>
       </div>
     </section>
 
     <!-- ===== Reviews ===== -->
-    <section class="reviews">
+    <section class="reviews" id="reviews">
       <div class="reviews__head reveal">
         <h2>Über 2 Millionen Menschen trinken air up</h2>
         <div class="reviews__stars" aria-label="4,8 von 5 Sternen">★★★★★ <span>4,8 / 5 · 38.420 Bewertungen</span></div>
@@ -222,7 +236,7 @@
     </section>
 
     <!-- ===== Newsletter ===== -->
-    <section class="newsletter">
+    <section class="newsletter band--water">
       <div class="newsletter__inner reveal">
         <h2>10&nbsp;% auf deine erste Bestellung</h2>
         <p>Abonniere den Newsletter und sichere dir deinen Willkommens-Gutschein.</p>
@@ -256,6 +270,10 @@
           <a href="#">Impressum</a><a href="#">Datenschutz</a><a href="#">AGB</a><a href="#">Widerruf</a>
         </div>
       </div>
+
+      <!-- dezente Business-Werbung -->
+      <div class="footer__credit" id="bizFooter" hidden></div>
+
       <p class="footer__legal">
         © <span id="year">2026</span> air up Store · Alle Preise inkl. MwSt. zzgl. Versand.<br>
         Dies ist ein fiktiver Demo-Shop zu Test-/Lernzwecken und steht in keiner Verbindung zur air up group GmbH. Es findet keine echte Zahlung statt.
@@ -285,6 +303,7 @@
     </div>
   </aside>
 
+  <script src="js/site-config.js"></script>
   <script src="js/illustrations.js"></script>
   <script src="js/products.js"></script>
   <script src="js/main.js"></script>
