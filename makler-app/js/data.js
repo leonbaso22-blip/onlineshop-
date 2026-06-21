@@ -4,7 +4,7 @@
    (neue Anfragen, Termine, gesendete Antworten) erhalten bleiben.
    =========================================================================== */
 
-const STORAGE_KEY = 'makler-ki-state-v1';
+const STORAGE_KEY = 'makler-ki-state-v2';
 
 /* --- Hilfsfunktionen für Datumswerte (relativ zu heute) -------------------- */
 function dayOffset(days, hour = 10, min = 0) {
@@ -74,180 +74,110 @@ const SEED_OBJECTS = [
     description: 'Repräsentative Büroeinheit, teilbar, klimatisiert, mit Meetingräumen und Teeküche. Provisionsfrei für Mieter.',
     features: ['Klimaanlage', 'Meetingräume', 'teilbar', 'Glasfaser'],
   },
+  {
+    id: 'obj-5',
+    title: 'Penthouse mit Dachterrasse & Alpenblick',
+    type: 'Wohnung',
+    address: 'Prinzregentenstraße 88',
+    city: '81675 München',
+    price: 1690000,
+    rooms: 4,
+    area: 136,
+    status: 'verfügbar',
+    description: 'Exklusives Penthouse im Dachgeschoss mit 40 m² Terrasse, Smart-Home und Blick bis zu den Alpen.',
+    features: ['Dachterrasse', 'Smart-Home', 'Aufzug', 'Tiefgarage', 'Alpenblick'],
+  },
 ];
 
 /* --- Anfragen / Leads inkl. Konversationsverlauf --------------------------- */
 const SEED_LEADS = [
   {
-    id: 'lead-1',
-    name: 'Familie Becker',
-    contact: 'Sabine Becker',
-    email: 's.becker@example.de',
-    phone: '+49 151 2345678',
-    objectId: 'obj-2',
-    status: 'neu',
-    intent: 'besichtigung',
-    createdAt: dayOffset(0, 8, 15),
+    id: 'lead-1', name: 'Familie Becker', contact: 'Sabine Becker',
+    email: 's.becker@example.de', phone: '+49 151 2345678',
+    objectId: 'obj-2', status: 'neu', intent: 'besichtigung', createdAt: dayOffset(0, 8, 15),
+    messages: [{ from: 'kunde', time: dayOffset(0, 8, 15), text: 'Guten Tag, wir interessieren uns sehr für das Reihenhaus in Haar. Wäre eine Besichtigung am kommenden Wochenende möglich? Wir haben zwei Kinder und suchen etwas mit Garten. Wir möchten zeitnah kaufen.' }],
+  },
+  {
+    id: 'lead-2', name: 'Herr Demir', contact: 'Kenan Demir',
+    email: 'k.demir@example.de', phone: '+49 160 9988776',
+    objectId: 'obj-1', status: 'in Kontakt', intent: 'preis', createdAt: dayOffset(-1, 14, 30),
     messages: [
-      {
-        from: 'kunde',
-        time: dayOffset(0, 8, 15),
-        text: 'Guten Tag, wir interessieren uns sehr für das Reihenhaus in Haar. Wäre eine Besichtigung am kommenden Wochenende möglich? Wir haben zwei Kinder und suchen etwas mit Garten.',
-      },
+      { from: 'kunde', time: dayOffset(-1, 14, 30), text: 'Hallo, ist der Preis für die Altbauwohnung noch verhandelbar? Und wie hoch sind die monatlichen Nebenkosten ungefähr?' },
+      { from: 'makler', time: dayOffset(-1, 16, 5), text: 'Sehr geehrter Herr Demir, vielen Dank für Ihr Interesse. Gerne bespreche ich die Details mit Ihnen persönlich. Hätten Sie diese Woche Zeit für ein kurzes Telefonat?' },
     ],
   },
   {
-    id: 'lead-2',
-    name: 'Herr Demir',
-    contact: 'Kenan Demir',
-    email: 'k.demir@example.de',
-    phone: '+49 160 9988776',
-    objectId: 'obj-1',
-    status: 'in Kontakt',
-    intent: 'preis',
-    createdAt: dayOffset(-1, 14, 30),
+    id: 'lead-3', name: 'Frau Hoffmann', contact: 'Julia Hoffmann',
+    email: 'j.hoffmann@example.de', phone: '+49 170 5566778',
+    objectId: 'obj-3', status: 'Besichtigung geplant', intent: 'kapitalanlage', createdAt: dayOffset(-3, 11, 0),
     messages: [
-      {
-        from: 'kunde',
-        time: dayOffset(-1, 14, 30),
-        text: 'Hallo, ist der Preis für die Altbauwohnung noch verhandelbar? Und wie hoch sind die monatlichen Nebenkosten ungefähr?',
-      },
-      {
-        from: 'makler',
-        time: dayOffset(-1, 16, 5),
-        text: 'Sehr geehrter Herr Demir, vielen Dank für Ihr Interesse. Gerne bespreche ich die Details mit Ihnen persönlich. Hätten Sie diese Woche Zeit für ein kurzes Telefonat?',
-      },
+      { from: 'kunde', time: dayOffset(-3, 11, 0), text: 'Guten Tag, mich interessiert die Anlagewohnung an der Tegernseer Landstraße. Wie hoch ist die aktuelle Mietrendite?' },
+      { from: 'makler', time: dayOffset(-3, 13, 20), text: 'Sehr geehrte Frau Hoffmann, die Wohnung erzielt eine Bruttorendite von ca. 3,1 %. Ich schlage einen Besichtigungstermin vor – passt Ihnen Donnerstag, 15 Uhr?' },
+      { from: 'kunde', time: dayOffset(-2, 9, 10), text: 'Donnerstag 15 Uhr passt mir gut, ich freue mich darauf.' },
     ],
   },
   {
-    id: 'lead-3',
-    name: 'Frau Hoffmann',
-    contact: 'Julia Hoffmann',
-    email: 'j.hoffmann@example.de',
-    phone: '+49 170 5566778',
-    objectId: 'obj-3',
-    status: 'Besichtigung geplant',
-    intent: 'kapitalanlage',
-    createdAt: dayOffset(-3, 11, 0),
+    id: 'lead-4', name: 'Herr & Frau Wagner', contact: 'Thomas Wagner',
+    email: 't.wagner@example.de', phone: '+49 152 1122334',
+    objectId: 'obj-2', status: 'Angebot', intent: 'finanzierung', createdAt: dayOffset(-6, 10, 45),
     messages: [
-      {
-        from: 'kunde',
-        time: dayOffset(-3, 11, 0),
-        text: 'Guten Tag, mich interessiert die Anlagewohnung an der Tegernseer Landstraße. Wie hoch ist die aktuelle Mietrendite?',
-      },
-      {
-        from: 'makler',
-        time: dayOffset(-3, 13, 20),
-        text: 'Sehr geehrte Frau Hoffmann, die Wohnung erzielt eine Bruttorendite von ca. 3,1 %. Ich schlage einen Besichtigungstermin vor – passt Ihnen Donnerstag, 15 Uhr?',
-      },
-      {
-        from: 'kunde',
-        time: dayOffset(-2, 9, 10),
-        text: 'Donnerstag 15 Uhr passt mir gut, ich freue mich darauf.',
-      },
+      { from: 'kunde', time: dayOffset(-6, 10, 45), text: 'Hallo, nach der Besichtigung des Reihenhauses möchten wir ein Angebot abgeben. Können Sie uns mit einer Finanzierungsempfehlung weiterhelfen? Eigenkapital ist vorhanden.' },
+      { from: 'makler', time: dayOffset(-6, 12, 0), text: 'Sehr gerne! Ich stelle Ihnen den Kontakt zu unserem Finanzierungspartner her und sende Ihnen das Exposé mit allen Unterlagen zu.' },
     ],
   },
   {
-    id: 'lead-4',
-    name: 'Herr & Frau Wagner',
-    contact: 'Thomas Wagner',
-    email: 't.wagner@example.de',
-    phone: '+49 152 1122334',
-    objectId: 'obj-2',
-    status: 'Angebot',
-    intent: 'finanzierung',
-    createdAt: dayOffset(-6, 10, 45),
+    id: 'lead-5', name: 'Startup Lumio GmbH', contact: 'Mara Vogel',
+    email: 'm.vogel@lumio.example', phone: '+49 89 12345600',
+    objectId: 'obj-4', status: 'neu', intent: 'verfügbarkeit', createdAt: dayOffset(0, 9, 50),
+    messages: [{ from: 'kunde', time: dayOffset(0, 9, 50), text: 'Guten Tag, ist die Bürofläche im Glockenbachviertel ab dem 1. des nächsten Monats verfügbar? Wir bräuchten ca. 120 m² für 10 Mitarbeitende.' }],
+  },
+  {
+    id: 'lead-6', name: 'Dr. Kaiser', contact: 'Anna Kaiser',
+    email: 'a.kaiser@example.de', phone: '+49 171 3344556',
+    objectId: 'obj-5', status: 'neu', intent: 'besichtigung', createdAt: dayOffset(0, 7, 40),
+    messages: [{ from: 'kunde', time: dayOffset(0, 7, 40), text: 'Guten Morgen, das Penthouse mit Dachterrasse hat uns sofort begeistert. Wir würden gerne so schnell wie möglich besichtigen – Budget ist kein Problem. Wann ist der nächste Termin frei?' }],
+  },
+  {
+    id: 'lead-7', name: 'Herr Lang', contact: 'Peter Lang',
+    email: 'p.lang@example.de', phone: '+49 162 7788990',
+    objectId: 'obj-1', status: 'abgeschlossen', intent: 'finanzierung', createdAt: dayOffset(-18, 9, 0),
     messages: [
-      {
-        from: 'kunde',
-        time: dayOffset(-6, 10, 45),
-        text: 'Hallo, nach der Besichtigung des Reihenhauses möchten wir ein Angebot abgeben. Können Sie uns mit einer Finanzierungsempfehlung weiterhelfen?',
-      },
-      {
-        from: 'makler',
-        time: dayOffset(-6, 12, 0),
-        text: 'Sehr gerne! Ich stelle Ihnen den Kontakt zu unserem Finanzierungspartner her und sende Ihnen das Exposé mit allen Unterlagen zu.',
-      },
+      { from: 'kunde', time: dayOffset(-18, 9, 0), text: 'Wir möchten die Altbauwohnung kaufen. Wie geht es weiter mit dem Notartermin?' },
+      { from: 'makler', time: dayOffset(-17, 10, 0), text: 'Herzlichen Glückwunsch! Ich koordiniere den Notartermin und melde mich mit Vorschlägen.' },
     ],
   },
   {
-    id: 'lead-5',
-    name: 'Startup Lumio GmbH',
-    contact: 'Mara Vogel',
-    email: 'm.vogel@lumio.example',
-    phone: '+49 89 12345600',
-    objectId: 'obj-4',
-    status: 'neu',
-    intent: 'verfügbarkeit',
-    createdAt: dayOffset(0, 9, 50),
+    id: 'lead-8', name: 'Frau Sommer', contact: 'Lena Sommer',
+    email: 'l.sommer@example.de', phone: '+49 175 2211009',
+    objectId: 'obj-3', status: 'verloren', intent: 'preis', createdAt: dayOffset(-12, 15, 0),
     messages: [
-      {
-        from: 'kunde',
-        time: dayOffset(0, 9, 50),
-        text: 'Guten Tag, ist die Bürofläche im Glockenbachviertel ab dem 1. des nächsten Monats verfügbar? Wir bräuchten ca. 120 m² für 10 Mitarbeitende.',
-      },
+      { from: 'kunde', time: dayOffset(-12, 15, 0), text: 'Der Preis liegt leider deutlich über unserem Budget. Vielen Dank trotzdem.' },
     ],
   },
 ];
 
 /* --- Termine (Besichtigungen, Beratungen) ---------------------------------- */
 const SEED_APPOINTMENTS = [
-  {
-    id: 'apt-1',
-    leadId: 'lead-3',
-    objectId: 'obj-3',
-    type: 'Besichtigung',
-    date: isoDate(2),
-    time: '15:00',
-    notes: 'Erstbesichtigung mit Frau Hoffmann.',
-  },
-  {
-    id: 'apt-2',
-    leadId: 'lead-4',
-    objectId: 'obj-2',
-    type: 'Beratung',
-    date: isoDate(1),
-    time: '11:30',
-    notes: 'Finanzierungsgespräch, Partner hinzuziehen.',
-  },
-  {
-    id: 'apt-3',
-    leadId: 'lead-2',
-    objectId: 'obj-1',
-    type: 'Telefonat',
-    date: isoDate(0),
-    time: '17:00',
-    notes: 'Preis & Nebenkosten besprechen.',
-  },
+  { id: 'apt-1', leadId: 'lead-3', objectId: 'obj-3', type: 'Besichtigung', date: isoDate(2), time: '15:00', notes: 'Erstbesichtigung mit Frau Hoffmann.' },
+  { id: 'apt-2', leadId: 'lead-4', objectId: 'obj-2', type: 'Beratung', date: isoDate(1), time: '11:30', notes: 'Finanzierungsgespräch, Partner hinzuziehen.' },
+  { id: 'apt-3', leadId: 'lead-2', objectId: 'obj-1', type: 'Telefonat', date: isoDate(0), time: '17:00', notes: 'Preis & Nebenkosten besprechen.' },
+  { id: 'apt-4', leadId: 'lead-6', objectId: 'obj-5', type: 'Besichtigung', date: isoDate(3), time: '10:00', notes: 'Penthouse – Premium-Kunde.' },
+  { id: 'apt-5', leadId: 'lead-7', objectId: 'obj-1', type: 'Notartermin', date: isoDate(5), time: '09:30', notes: 'Beurkundung Kaufvertrag.' },
+  { id: 'apt-6', leadId: 'lead-1', objectId: 'obj-2', type: 'Besichtigung', date: isoDate(6), time: '14:00', notes: 'Familie mit Kindern, Garten zeigen.' },
 ];
 
 /* --- State laden / speichern ----------------------------------------------- */
 function loadState() {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (raw) {
-    try {
-      return JSON.parse(raw);
-    } catch {
-      /* fällt auf Seed zurück */
-    }
+    try { return JSON.parse(raw); } catch { /* fällt auf Seed zurück */ }
   }
-  const seed = {
-    objects: SEED_OBJECTS,
-    leads: SEED_LEADS,
-    appointments: SEED_APPOINTMENTS,
-  };
+  const seed = { objects: SEED_OBJECTS, leads: SEED_LEADS, appointments: SEED_APPOINTMENTS };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
   return seed;
 }
-
-function saveState(state) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-}
-
-function resetState() {
-  localStorage.removeItem(STORAGE_KEY);
-  return loadState();
-}
+function saveState(state) { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+function resetState() { localStorage.removeItem(STORAGE_KEY); return loadState(); }
 
 const STATUS_FLOW = ['neu', 'in Kontakt', 'Besichtigung geplant', 'Angebot', 'abgeschlossen', 'verloren'];
 
