@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ImmoAssist – Der KI-Assistent für Immobilienmakler</title>
+<meta name="description" content="ImmoAssist beantwortet Anfragen, plant Termine und priorisiert Leads – wie ein digitaler Mitarbeiter für Makler. Sparen Sie Stunden pro Woche." />
+<meta name="theme-color" content="#0b3b39" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400..700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --primary:#0f766e;--primary-600:#0d9488;--accent:#0369a1;--accent-light:#38bdf8;
+    --ink:#0b1f1d;--text:#0f172a;--muted:#5b6b78;--bg:#ffffff;--soft:#f4f8f7;--border:#e6eef0;
+    --radius:18px;--shadow:0 1px 2px rgba(15,23,42,.04),0 18px 50px rgba(13,148,136,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;background:var(--bg)}
+  h1,h2,h3{font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-.01em;line-height:1.1}
+  h1{font-size:clamp(2.3rem,5.5vw,4rem)}
+  h2{font-size:clamp(1.7rem,3.5vw,2.6rem)}
+  h3{font-size:1.15rem;font-family:'Inter';font-weight:650}
+  p{color:var(--muted)}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
+  .btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:14px 26px;font-weight:600;font-size:1rem;border:1px solid transparent;transition:transform .15s,box-shadow .15s,background .15s;cursor:pointer}
+  .btn-primary{background:var(--primary);color:#fff;box-shadow:var(--shadow)}
+  .btn-primary:hover{transform:translateY(-2px);background:var(--primary-600)}
+  .btn-ghost{background:transparent;border-color:var(--border);color:var(--text)}
+  .btn-ghost:hover{border-color:var(--primary);color:var(--primary)}
+  svg{width:20px;height:20px;flex:none}
+
+  /* Nav */
+  header.nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);background:rgba(255,255,255,.82);border-bottom:1px solid var(--border)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:1140px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.1rem}
+  .brand .mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--primary-600),var(--accent));display:grid;place-items:center;color:#fff}
+  .nav-links{display:flex;align-items:center;gap:26px;font-size:.95rem}
+  .nav-links a{color:var(--muted)}.nav-links a:hover{color:var(--text)}
+  @media(max-width:760px){.nav-links a:not(.btn){display:none}}
+
+  /* Hero */
+  .hero{position:relative;overflow:hidden;padding:84px 0 70px;background:
+     radial-gradient(60% 60% at 80% 0%,rgba(56,189,248,.16),transparent 60%),
+     radial-gradient(50% 50% at 0% 30%,rgba(13,148,136,.14),transparent 60%)}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center}
+  @media(max-width:920px){.hero-grid{grid-template-columns:1fr;gap:36px}}
+  .badge{display:inline-flex;align-items:center;gap:8px;background:var(--soft);border:1px solid var(--border);color:var(--primary);font-weight:600;font-size:.83rem;padding:6px 14px;border-radius:999px;margin-bottom:22px}
+  .hero h1{margin-bottom:18px}
+  .hero h1 em{font-style:italic;color:var(--primary)}
+  .hero p.lead{font-size:1.2rem;max-width:540px;margin-bottom:28px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .trust{display:flex;gap:22px;margin-top:30px;flex-wrap:wrap}
+  .trust div{font-size:.85rem;color:var(--muted)}
+  .trust b{display:block;font-family:'Fraunces',serif;font-size:1.7rem;color:var(--text);line-height:1}
+
+  /* Mock chat card */
+  .mock{background:#fff;border:1px solid var(--border);border-radius:24px;box-shadow:var(--shadow);overflow:hidden;animation:rise .7s both}
+  @keyframes rise{from{opacity:0;transform:translateY(20px)}}
+  .mock-top{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--border);background:var(--soft)}
+  .mock-top .dot{width:10px;height:10px;border-radius:50%;background:#d6e2e2}
+  .mock-title{margin-left:8px;font-size:.85rem;color:var(--muted);font-weight:600}
+  .mock-body{padding:20px}
+  .chip{display:inline-flex;align-items:center;gap:6px;font-size:.74rem;font-weight:700;color:var(--accent);background:#eff6ff;border-radius:999px;padding:3px 11px;margin-bottom:12px}
+  .bubble{padding:12px 15px;border-radius:14px;font-size:.92rem;margin-bottom:12px;max-width:88%}
+  .bubble.in{background:var(--soft);color:var(--text);border-bottom-left-radius:5px}
+  .bubble.out{background:var(--primary);color:#fff;border-bottom-right-radius:5px;margin-left:auto}
+  .typing{font-size:.8rem;color:var(--muted);display:flex;gap:5px;align-items:center}
+  .typing i{width:6px;height:6px;border-radius:50%;background:var(--primary);display:inline-block;animation:bnc 1s infinite}
+  .typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+  @keyframes bnc{0%,80%,100%{transform:scale(.5);opacity:.4}40%{transform:scale(1);opacity:1}}
+
+  section{padding:80px 0}
+  .eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;font-weight:700;color:var(--primary);margin-bottom:12px}
+  .sec-head{max-width:680px;margin:0 auto 50px;text-align:center}
+  .sec-head p{font-size:1.12rem;margin-top:14px}
+
+  .prob{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:820px){.prob{grid-template-columns:1fr}}
+  .pcard{background:var(--soft);border:1px solid var(--border);border-radius:var(--radius);padding:28px}
+  .pcard .ic{width:46px;height:46px;border-radius:12px;background:#fff;border:1px solid var(--border);display:grid;place-items:center;color:var(--primary);margin-bottom:16px}
+  .pcard h3{margin-bottom:8px}
+  .pcard p{font-size:.96rem}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;counter-reset:s}
+  @media(max-width:820px){.steps{grid-template-columns:1fr}}
+  .step{position:relative;padding:30px 24px;border:1px solid var(--border);border-radius:var(--radius)}
+  .step::before{counter-increment:s;content:counter(s);position:absolute;top:-18px;left:24px;width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--primary-600),var(--accent));color:#fff;display:grid;place-items:center;font-weight:700;font-family:'Fraunces',serif}
+  .step h3{margin:8px 0}
+
+  .feat{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  @media(max-width:820px){.feat{grid-template-columns:1fr}}
+  .fcard{display:flex;gap:16px;padding:22px;border:1px solid var(--border);border-radius:var(--radius)}
+  .fcard .ic{width:42px;height:42px;border-radius:11px;background:var(--soft);color:var(--primary);display:grid;place-items:center;flex:none}
+  .fcard h3{margin-bottom:5px}.fcard p{font-size:.93rem}
+
+  .roi{background:linear-gradient(135deg,#0b3b39,#0a2e3a);color:#fff;border-radius:26px;padding:56px;text-align:center;position:relative;overflow:hidden}
+  .roi::after{content:"";position:absolute;inset:0;background:radial-gradient(50% 70% at 20% 0%,rgba(45,212,191,.25),transparent 60%);pointer-events:none}
+  .roi h2{color:#fff}.roi p{color:#bfe0db;max-width:560px;margin:14px auto 0;position:relative}
+  .roi-row{display:flex;justify-content:center;gap:48px;margin-top:34px;flex-wrap:wrap;position:relative}
+  .roi-row b{font-family:'Fraunces',serif;font-size:2.6rem;display:block;line-height:1}
+  .roi-row span{color:#9fc6c1;font-size:.9rem}
+
+  .price{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:stretch}
+  @media(max-width:880px){.price{grid-template-columns:1fr}}
+  .plan{border:1px solid var(--border);border-radius:var(--radius);padding:30px;display:flex;flex-direction:column;background:#fff}
+  .plan.feat-plan{border-color:var(--primary);box-shadow:var(--shadow);position:relative}
+  .plan.feat-plan .tag{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--primary);color:#fff;font-size:.74rem;font-weight:700;padding:4px 14px;border-radius:999px}
+  .plan h3{font-family:'Fraunces',serif;font-size:1.4rem}
+  .amount{font-family:'Fraunces',serif;font-size:2.6rem;margin:8px 0}
+  .amount small{font-size:.95rem;color:var(--muted);font-family:'Inter'}
+  .plan ul{list-style:none;margin:18px 0 24px;display:flex;flex-direction:column;gap:11px}
+  .plan li{display:flex;gap:10px;font-size:.94rem;color:var(--text)}
+  .plan li svg{color:var(--primary);width:18px;height:18px;margin-top:3px}
+  .plan .btn{margin-top:auto;justify-content:center}
+
+  .faq{max-width:760px;margin:0 auto}
+  details{border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px}
+  details[open]{background:var(--soft)}
+  summary{font-weight:650;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";font-size:1.4rem;color:var(--primary)}
+  details[open] summary::after{content:"–"}
+  details p{margin-top:12px;font-size:.95rem}
+
+  .final{text-align:center;background:var(--soft);border-radius:26px;padding:64px 24px}
+  .final h2{margin-bottom:14px}.final p{max-width:520px;margin:0 auto 26px;font-size:1.1rem}
+
+  footer{border-top:1px solid var(--border);padding:34px 0;color:var(--muted);font-size:.88rem}
+  .foot-in{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+  .note{font-size:.8rem;color:var(--muted);margin-top:8px}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-in">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01"/></svg></span>ImmoAssist</div>
+    <nav class="nav-links">
+      <a href="#funktionen">Funktionen</a>
+      <a href="#ablauf">So funktioniert's</a>
+      <a href="#preise">Preise</a>
+      <a class="btn btn-primary" href="index.html">Live-Demo öffnen</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/></svg> KI-Assistent für Immobilienmakler</span>
+      <h1>Ihr digitaler Mitarbeiter, der <em>nie</em> eine Anfrage liegen lässt.</h1>
+      <p class="lead">ImmoAssist beantwortet Interessenten, plant Besichtigungen und sagt Ihnen, welcher Lead heiß ist – damit Sie sich aufs Verkaufen konzentrieren statt auf den Posteingang.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="index.html">Kostenlos testen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a class="btn btn-ghost" href="#ablauf">In 2 Minuten verstehen</a>
+      </div>
+      <div class="trust">
+        <div><b>~6 Std.</b>gespart pro Woche</div>
+        <div><b>&lt; 5 Min.</b>Antwortzeit statt Stunden</div>
+        <div><b>100 %</b>Kontrolle – Sie senden</div>
+      </div>
+    </div>
+
+    <div class="mock">
+      <div class="mock-top"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="mock-title">Anfrage · Familie Becker</span></div>
+      <div class="mock-body">
+        <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10z"/></svg> KI erkennt: Besichtigung</span>
+        <div class="bubble in">Guten Tag, wir interessieren uns für das Reihenhaus in Haar. Wäre eine Besichtigung am Wochenende möglich?</div>
+        <div class="bubble out" id="typed">Sehr geehrte Familie Becker, vielen Dank für Ihr Interesse …</div>
+        <div class="typing"><i></i><i></i><i></i> ImmoAssist entwirft die Antwort</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Das Problem</div>
+      <h2>Anfragen kosten Sie Zeit – und Provisionen</h2>
+      <p>Jede zweite Online-Anfrage bekommt keine schnelle Antwort. Wer zuerst und am besten reagiert, gewinnt den Termin. Genau hier verlieren Makler bares Geld.</p>
+    </div>
+    <div class="prob">
+      <div class="pcard"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><h3>Zu langsam</h3><p>Anfragen liegen Stunden im Postfach. Der Interessent hat längst woanders einen Termin.</p></div>
+      <div class="pcard"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div><h3>Immer dasselbe</h3><p>Preis, Verfügbarkeit, Finanzierung – Sie tippen jeden Tag dieselben Antworten.</p></div>
+      <div class="pcard"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg></div><h3>Kein Überblick</h3><p>Welcher Lead ist heiß? Wo steht jeder Kontakt? Ohne System gehen Chancen verloren.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABLAUF -->
+<section id="ablauf" style="background:var(--soft)">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">So funktioniert's</div><h2>In drei Schritten zum Termin</h2></div>
+    <div class="steps">
+      <div class="step"><h3>Anfrage trifft ein</h3><p>Ein Interessent schreibt zu einem Ihrer Objekte. ImmoAssist erkennt sofort das Anliegen und die Dringlichkeit.</p></div>
+      <div class="step"><h3>KI entwirft die Antwort</h3><p>Auf Knopfdruck entsteht ein passender, persönlicher Antwortentwurf mit Terminvorschlag – auf Basis Ihrer Objektdaten.</p></div>
+      <div class="step"><h3>Sie prüfen & senden</h3><p>Kurz drüberlesen, anpassen, senden. Der Termin landet im Kalender. Sie bleiben jederzeit in Kontrolle.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FUNKTIONEN -->
+<section id="funktionen">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Funktionen</div><h2>Alles, was ein guter Assistent kann</h2></div>
+    <div class="feat">
+      <div class="fcard"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10z"/></svg></div><div><h3>KI-Antwortentwürfe</h3><p>Persönliche Antworten je nach Anliegen – live getippt, in Sekunden, immer im richtigen Ton.</p></div></div>
+      <div class="fcard"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.4-.5-2-1-3-1.1-2.1-.2-4 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.2.4-2.3 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div><div><h3>Lead-Scoring</h3><p>Jede Anfrage wird automatisch als Hot, Warm oder Cold bewertet. Sie wissen sofort, wo sich Nachfassen lohnt.</p></div></div>
+      <div class="fcard"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div><div><h3>Termine & Kalender</h3><p>Besichtigungen aus dem Chat heraus anlegen. Die KI schlägt den nächsten freien Slot vor.</p></div></div>
+      <div class="fcard"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8"/></svg></div><div><h3>Exposé-Generator</h3><p>Aus den Objektdaten erstellt die KI auf Knopfdruck einen fertigen Exposé-Text zum Kopieren.</p></div></div>
+      <div class="fcard"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></div><div><h3>Tägliches Briefing</h3><p>Beim Start fasst die KI Ihren Tag zusammen: offene Anfragen, heiße Leads, Termine, Top-Priorität.</p></div></div>
+      <div class="fcard"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg></div><div><h3>Analysen</h3><p>Verkaufstrichter, Conversion-Quoten und Anfragen je Objekt – sehen Sie, was funktioniert.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ROI -->
+<section>
+  <div class="wrap">
+    <div class="roi">
+      <h2>Rechnet sich ab dem ersten Monat</h2>
+      <p>Wenn ImmoAssist Ihnen hilft, nur einen zusätzlichen Abschluss pro Jahr zu gewinnen, hat es sich um ein Vielfaches bezahlt gemacht.</p>
+      <div class="roi-row">
+        <div><b>6 Std.</b><span>Zeitersparnis / Woche</span></div>
+        <div><b>3×</b><span>schnellere Reaktion</span></div>
+        <div><b>1</b><span>extra Abschluss zahlt alles</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREISE -->
+<section id="preise" style="background:var(--soft)">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Preise</div><h2>Ein Plan für jede Größe</h2><p>Klar und fair. Jederzeit kündbar. 14 Tage kostenlos testen.</p></div>
+    <div class="price">
+      <div class="plan">
+        <h3>Solo</h3>
+        <div class="amount">49 €<small> / Monat</small></div>
+        <p>Für Einzelmakler, die schneller antworten wollen.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> KI-Antwortentwürfe</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Termine & Kalender</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Bis zu 25 Objekte</li>
+        </ul>
+        <a class="btn btn-ghost" href="index.html">Testen</a>
+      </div>
+      <div class="plan feat-plan">
+        <span class="tag">Beliebt</span>
+        <h3>Pro</h3>
+        <div class="amount">99 €<small> / Monat</small></div>
+        <p>Der Komplett-Assistent für aktive Makler.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Alles aus Solo</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Lead-Scoring & Tagesbriefing</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Exposé-Generator & Analysen</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Unbegrenzte Objekte</li>
+        </ul>
+        <a class="btn btn-primary" href="index.html">14 Tage gratis</a>
+      </div>
+      <div class="plan">
+        <h3>Team</h3>
+        <div class="amount">249 €<small> / Monat</small></div>
+        <p>Für Büros mit mehreren Maklern.</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Alles aus Pro</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Bis zu 8 Mitarbeitende</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Gemeinsamer Posteingang</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Persönliches Onboarding</li>
+        </ul>
+        <a class="btn btn-ghost" href="index.html">Beratung anfragen</a>
+      </div>
+    </div>
+    <p class="note" style="text-align:center;margin-top:18px">Demo-Preise. Beträge dienen der Veranschaulichung des Geschäftsmodells.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Fragen & Antworten</div><h2>Was Makler oft fragen</h2></div>
+    <div class="faq">
+      <details open><summary>Übernimmt die KI die Kommunikation ganz allein?</summary><p>Nein – und das ist Absicht. ImmoAssist erstellt Entwürfe, Sie prüfen und senden. So bleibt Ihr persönlicher Stil erhalten und Sie behalten die volle Kontrolle über jede Nachricht.</p></details>
+      <details><summary>Wie steht es um den Datenschutz?</summary><p>Kundendaten werden ausschließlich zur Erstellung Ihrer Antworten verarbeitet. Der KI-Zugang läuft über einen sicheren Server – Schlüssel und Daten liegen nie im Browser. Eine DSGVO-konforme Auftragsverarbeitung ist Teil des Setups.</p></details>
+      <details><summary>Muss ich etwas installieren?</summary><p>Nein. ImmoAssist läuft im Browser – am Desktop und mobil. Sie melden sich an und legen los.</p></details>
+      <details><summary>Funktioniert es mit meinen bestehenden Objekten?</summary><p>Ja. Sie pflegen Ihre Objekte einmal ein; die KI bezieht sich für jede Antwort und jedes Exposé darauf.</p></details>
+      <details><summary>Kann ich es vorher ausprobieren?</summary><p>Ja – die <a href="index.html" style="color:var(--primary);font-weight:600">Live-Demo</a> ist sofort nutzbar, ganz ohne Anmeldung.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section>
+  <div class="wrap">
+    <div class="final">
+      <h2>Gewinnen Sie Ihre Zeit zurück.</h2>
+      <p>Lassen Sie ImmoAssist den Posteingang übernehmen – und kümmern Sie sich um das, was zählt: Abschlüsse.</p>
+      <a class="btn btn-primary" href="index.html">Jetzt Live-Demo öffnen <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <div class="brand"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22v-4h6v4"/></svg></span>ImmoAssist</div>
+    <div>© 2026 ImmoAssist · Demo-Projekt · <a href="index.html" style="color:var(--primary)">Zur App</a></div>
+  </div>
+</footer>
+
+<script>
+  // Kleiner Tipp-Effekt im Hero-Mockup
+  (function(){
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var el = document.getElementById('typed');
+    var full = 'Sehr geehrte Familie Becker, vielen Dank für Ihr Interesse am Reihenhaus in Haar. Sehr gerne zeige ich Ihnen das Objekt – passt Ihnen Samstag um 11 Uhr?';
+    var i = 0; el.textContent = '';
+    function tick(){ if(i<full.length){ el.textContent = full.slice(0, i+=2); setTimeout(tick, 18);} }
+    setTimeout(tick, 700);
+  })();
+</script>
+</body>
+</html>

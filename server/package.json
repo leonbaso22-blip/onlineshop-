@@ -1,0 +1,15 @@
+{
+  "name": "immoassist-server",
+  "version": "1.0.0",
+  "description": "Backend für ImmoAssist – ruft die Claude API für KI-Antwortentwürfe und Exposés auf. Der API-Schlüssel bleibt serverseitig.",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.40.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  }
+}

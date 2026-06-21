@@ -217,9 +217,9 @@ function mountLeadDetailEvents() {
   const l = leadById(activeLeadId);
   if (!l) return;
 
-  $('#genDraft', detail)?.addEventListener('click', () => {
+  $('#genDraft', detail)?.addEventListener('click', async () => {
     const o = objById(l.objectId);
-    const { draft, intent, suggestedSlot } = MaklerAI.generateReplyDraft(l, o, state.appointments);
+    const local = MaklerAI.generateReplyDraft(l, o, state.appointments);
     const box = $('#replyBox', detail);
     const thinking = $('#thinking', detail);
     const btn = $('#genDraft', detail);
@@ -227,17 +227,23 @@ function mountLeadDetailEvents() {
     btn.disabled = true; box.value = '';
     if (thinking) thinking.hidden = false;
     if (typer) typer.skip();
-    setTimeout(() => {
-      if (thinking) thinking.hidden = true;
-      typer = MaklerUI.typeWriter(box, draft, {
-        speed: 60,
-        onDone: () => {
-          btn.disabled = false;
-          hint.textContent = `KI-Entwurf · Anliegen: ${intent}` + (suggestedSlot ? ` · Vorschlag: ${suggestedSlot.human}` : '');
-        },
-      });
-    }, MaklerUI.prefersReduced() ? 0 : 650);
     toast('KI entwirft eine Antwort …');
+
+    // Echtes KI-Backend bevorzugen, sonst lokalen Entwurf verwenden.
+    const aiText = await MaklerAPI.draft(l, o);
+    if (!aiText && !MaklerUI.prefersReduced()) {
+      await new Promise((r) => setTimeout(r, 500)); // Denk-Effekt auch im lokalen Fallback
+    }
+    const draft = aiText || local.draft;
+    if (thinking) thinking.hidden = true;
+    typer = MaklerUI.typeWriter(box, draft, {
+      speed: 60,
+      onDone: () => {
+        btn.disabled = false;
+        const quelle = aiText ? 'KI-Antwort (Claude)' : 'KI-Entwurf (lokal)';
+        hint.textContent = `${quelle} · Anliegen: ${local.intent}` + (local.suggestedSlot ? ` · Vorschlag: ${local.suggestedSlot.human}` : '');
+      },
+    });
   });
 
   $('#sendReply', detail)?.addEventListener('click', () => {
@@ -418,10 +424,14 @@ function openExposeModal(objId) {
     try { await navigator.clipboard.writeText(ta.value); toast('Exposé kopiert.'); }
     catch { ta.select(); toast('Exposé markiert – mit Strg+C kopieren.'); }
   });
-  setTimeout(() => {
+  (async () => {
+    const aiText = await MaklerAPI.expose(o);
+    if (!aiText && !MaklerUI.prefersReduced()) {
+      await new Promise((r) => setTimeout(r, 500));
+    }
     thinking.hidden = true; thinking.style.display = 'none';
-    MaklerUI.typeWriter(ta, text, { speed: 90 });
-  }, MaklerUI.prefersReduced() ? 0 : 600);
+    MaklerUI.typeWriter(ta, aiText || text, { speed: 90 });
+  })();
 }
 
 /* ===========================================================================
