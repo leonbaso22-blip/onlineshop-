@@ -1,0 +1,176 @@
+:root {
+  --lumen: #ff7a3c;
+  --lumen-glow: #ffb066;
+  --aqua: #36b8ff;
+  --aqua-glow: #8fe0ff;
+  --bg: #0e1020;
+  --panel: rgba(255, 255, 255, 0.06);
+  --panel-border: rgba(255, 255, 255, 0.12);
+  --text: #eef1f8;
+  --muted: #aab2c8;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background:
+    radial-gradient(1200px 600px at 20% -10%, #1d2348 0%, transparent 60%),
+    radial-gradient(1000px 500px at 90% 110%, #241a3a 0%, transparent 55%),
+    var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.game-shell {
+  width: min(96vw, 1000px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 0;
+}
+
+.game-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.game-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 20px;
+  letter-spacing: 0.3px;
+}
+.game-title strong { font-weight: 700; }
+
+.logo-dot {
+  width: 13px; height: 13px; border-radius: 50%;
+  display: inline-block;
+}
+.logo-dot.lumen { background: var(--lumen); box-shadow: 0 0 12px var(--lumen-glow); }
+.logo-dot.aqua  { background: var(--aqua);  box-shadow: 0 0 12px var(--aqua-glow); margin-left: -4px; }
+
+.game-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.canvas-wrap {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.55), inset 0 0 0 1px rgba(255,255,255,0.06);
+  aspect-ratio: 960 / 600;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: optimizeQuality;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 10, 22, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: opacity 0.25s ease;
+}
+.overlay.hidden { opacity: 0; pointer-events: none; }
+
+.overlay-card {
+  width: min(86%, 540px);
+  background: rgba(20, 24, 44, 0.92);
+  border: 1px solid var(--panel-border);
+  border-radius: 18px;
+  padding: 30px 32px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.overlay-card h1 { font-size: 30px; margin-bottom: 6px; }
+.overlay-card h2 { font-size: 24px; margin-bottom: 10px; }
+.overlay-card p  { color: var(--muted); font-size: 15px; line-height: 1.6; margin-bottom: 8px; }
+.overlay-card .big { font-size: 46px; margin-bottom: 8px; }
+
+.legend {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 18px;
+  text-align: left;
+  margin: 16px auto 6px;
+  max-width: 420px;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+.legend .row { display: flex; align-items: center; gap: 9px; }
+.swatch { width: 16px; height: 16px; border-radius: 4px; flex: none; box-shadow: 0 0 8px rgba(0,0,0,0.4); }
+
+.btn {
+  margin-top: 18px;
+  display: inline-block;
+  background: linear-gradient(135deg, var(--lumen), var(--aqua));
+  color: #0c1020;
+  font-weight: 700;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 26px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+.btn:hover { transform: translateY(-1px); filter: brightness(1.06); }
+.btn:active { transform: translateY(0); }
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 14px;
+  padding: 12px 18px;
+}
+.ctrl-col { display: flex; flex-direction: column; gap: 4px; }
+.ctrl-col.mid { text-align: center; flex: 1; }
+.ctrl-col:last-child { text-align: right; align-items: flex-end; }
+.ctrl-name { font-weight: 700; font-size: 14px; }
+.lumen-text { color: var(--lumen-glow); }
+.aqua-text  { color: var(--aqua-glow); }
+.keys { color: var(--muted); font-size: 13px; }
+
+kbd {
+  background: #11142a;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  padding: 1px 7px;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--text);
+  margin: 0 1px;
+}
+
+@media (max-width: 560px) {
+  .controls { font-size: 12px; }
+  .ctrl-col.mid { order: 3; flex-basis: 100%; }
+}

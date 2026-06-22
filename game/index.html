@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Change Together – Zwei-Spieler-Biom-Abenteuer</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="game-shell">
+    <header class="game-bar">
+      <div class="game-title">
+        <span class="logo-dot lumen"></span>
+        <span class="logo-dot aqua"></span>
+        <strong>Change&nbsp;Together</strong>
+      </div>
+      <div class="game-stats">
+        <span id="biomeLabel" class="chip">Biom</span>
+        <span id="levelLabel" class="chip">Level 1</span>
+        <span id="gemLabel" class="chip">💎 0 / 0</span>
+      </div>
+    </header>
+
+    <div class="canvas-wrap">
+      <canvas id="game" width="960" height="600"></canvas>
+
+      <!-- Overlay screens -->
+      <div id="overlay" class="overlay">
+        <div class="overlay-card" id="overlayCard">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </div>
+
+    <footer class="controls">
+      <div class="ctrl-col">
+        <span class="ctrl-name lumen-text">🔥 Lumen</span>
+        <span class="keys"><kbd>A</kbd><kbd>D</kbd> bewegen · <kbd>W</kbd> springen</span>
+      </div>
+      <div class="ctrl-col mid">
+        <span class="keys"><kbd>R</kbd> Level neustarten · <kbd>Enter</kbd> weiter</span>
+      </div>
+      <div class="ctrl-col">
+        <span class="ctrl-name aqua-text">💧 Aqua</span>
+        <span class="keys"><kbd>◀</kbd><kbd>▶</kbd> bewegen · <kbd>▲</kbd> springen</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

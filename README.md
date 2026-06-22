@@ -3,6 +3,10 @@
 Ein professioneller Demo-Online-Shop für **air up** im minimalistischen Apple-Look.
 Reines HTML, CSS und JavaScript – **ohne Build-Schritt, ohne Abhängigkeiten, komplett offline lauffähig**.
 
+> 🎮 **Bonus – Spiel „Change Together":** In [`game/`](game/) liegt zusätzlich ein
+> Zwei-Spieler-Koop-Biom-Abenteuer (Canvas/JS). Einfach `game/index.html` öffnen.
+> Details siehe [`game/README.md`](game/README.md).
+
 > Demo-/Testprojekt: Dieser Shop ist fiktiv, steht in keiner Verbindung zur air up group GmbH und wickelt keine echten Zahlungen ab.
 
 ## Features
