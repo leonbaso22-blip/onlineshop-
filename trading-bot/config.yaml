@@ -1,0 +1,37 @@
+exchange:
+  # Beliebige von ccxt unterstützte Börsen-ID: binance, kraken, coinbase, bitget, okx, ...
+  name: binance
+  symbol: BTC/USDT
+  timeframe: 1h
+
+mode:
+  # true  = Paper-Trading (nur simulierte Orders, kein echtes Geld)
+  # false = Live-Trading mit echtem Geld (zusätzlich CONFIRM_LIVE_TRADING=YES in .env nötig)
+  dry_run: true
+  paper_starting_balance_quote: 1000.0
+
+strategy:
+  # sma_crossover | rsi_mean_reversion | combined
+  name: combined
+  sma:
+    fast_period: 20
+    slow_period: 50
+  rsi:
+    period: 14
+    oversold: 30
+    overbought: 70
+
+risk:
+  risk_per_trade_pct: 1.0
+  stop_loss_pct: 2.0
+  take_profit_pct: 4.0
+  max_open_positions: 1
+  max_daily_loss_pct: 5.0
+
+loop:
+  poll_interval_seconds: 60
+  ohlcv_lookback_candles: 200
+
+logging:
+  level: INFO
+  file: trading-bot/data/bot.log
