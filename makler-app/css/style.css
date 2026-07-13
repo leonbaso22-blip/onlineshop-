@@ -269,6 +269,11 @@ kbd { font-family: inherit; font-size:.7rem; background: var(--surface-2); borde
 .modal-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .modal-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:4px; }
 .modal .thinking { position:static; }
+.auth-tabs { display:flex; gap:6px; background:var(--surface-2); border-radius:12px; padding:4px; }
+.auth-tab { flex:1; border:0; background:transparent; padding:9px; border-radius:9px; font-weight:600; font-size:.9rem; color:var(--muted); cursor:pointer; }
+.auth-tab.active { background:var(--surface); color:var(--text); box-shadow:var(--shadow); }
+.auth-err:empty { display:none; }
+.auth-err { color:var(--hot); }
 
 /* --- Command-Palette ------------------------------------------------------- */
 .cmd-overlay { position:fixed; inset:0; background: rgba(8,15,22,.5); display:flex; justify-content:center; align-items:flex-start; padding-top:14vh; z-index:80; animation: fade .12s ease; backdrop-filter: blur(3px); }

@@ -1,0 +1,15 @@
+services:
+  immoassist:
+    build: .
+    ports:
+      - "8787:8787"
+    environment:
+      # Schlüssel aus deiner .env-Datei oder der Shell übernehmen
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      AUTH_SECRET: ${AUTH_SECRET:-bitte-aendern}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      APP_URL: ${APP_URL:-http://localhost:8787}
+      DATA_FILE: /data/immoassist.json
+    volumes:
+      - ./data:/data          # Nutzer- und App-Daten bleiben erhalten
+    restart: unless-stopped

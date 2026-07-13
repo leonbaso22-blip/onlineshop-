@@ -1,0 +1,19 @@
+/* Schlichtes, lesbares Layout für die Rechtstexte */
+:root{--primary:#0f766e;--text:#0f172a;--muted:#5b6b78;--border:#e6eef0;--soft:#f4f8f7}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:var(--text);line-height:1.65;background:#fff}
+.legal-nav{border-bottom:1px solid var(--border);background:var(--soft)}
+.legal-nav .in{max-width:820px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
+.legal-nav a{color:var(--primary);text-decoration:none;font-weight:600}
+.legal-nav .brand{font-weight:700;color:var(--text)}
+main{max-width:820px;margin:0 auto;padding:48px 24px 80px}
+h1{font-size:2rem;margin-bottom:8px;letter-spacing:-.02em}
+h2{font-size:1.2rem;margin:32px 0 10px}
+p,li{color:var(--muted);margin-bottom:10px}
+ul{padding-left:22px}
+a{color:var(--primary)}
+.hint{background:var(--soft);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin:20px 0;font-size:.9rem;color:var(--muted)}
+.ph{background:#fff6d6;border-radius:5px;padding:0 5px;color:#7a5c00;font-weight:600}
+footer{border-top:1px solid var(--border);max-width:820px;margin:0 auto;padding:24px;color:var(--muted);font-size:.85rem;display:flex;gap:16px;flex-wrap:wrap}
+footer a{color:var(--primary);text-decoration:none}
+.updated{font-size:.85rem;color:var(--muted);margin-top:4px}

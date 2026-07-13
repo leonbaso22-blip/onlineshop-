@@ -520,6 +520,82 @@ function mountViewEvents(view) {
   }
 }
 
+/* --- Konten / Cloud-Sync --------------------------------------------------- */
+// Brücke, damit cloud.js den App-Zustand ersetzen kann.
+window.MaklerApp = {
+  applyState(s) { if (s) { Object.assign(state, s); activeLeadId = null; } navigate('dashboard'); },
+  getState() { return state; },
+};
+
+function renderAuth() {
+  const area = $('#authArea');
+  if (!area) return;
+  const u = window.MaklerCloud && MaklerCloud.currentUser();
+  if (u) {
+    area.innerHTML = `
+      <div class="agent"><span class="avatar">${icon('user')}</span><div><strong>${escapeHtml(u.name || u.email)}</strong><span class="muted small">Angemeldet · synchronisiert</span></div></div>
+      <button class="nav-item subtle" id="logoutBtn">${icon('arrow')}<span>Abmelden</span></button>`;
+    $('#logoutBtn').addEventListener('click', () => { MaklerCloud.logout(); toast('Abgemeldet.'); renderAuth(); });
+  } else {
+    area.innerHTML = `
+      <button class="nav-item subtle" id="loginBtn">${icon('user')}<span>Anmelden / Registrieren</span></button>
+      <div class="agent"><span class="avatar">${icon('user')}</span><div><strong>Demo-Modus</strong><span class="muted small">nur in diesem Browser</span></div></div>`;
+    $('#loginBtn').addEventListener('click', openAuthModal);
+  }
+}
+
+function openAuthModal() {
+  let mode = 'login';
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  const close = () => modal.remove();
+  function render() {
+    modal.innerHTML = `
+      <div class="modal card" role="dialog" aria-modal="true" aria-label="Anmelden">
+        <div class="auth-tabs">
+          <button class="auth-tab ${mode === 'login' ? 'active' : ''}" data-mode="login">Anmelden</button>
+          <button class="auth-tab ${mode === 'register' ? 'active' : ''}" data-mode="register">Registrieren</button>
+        </div>
+        ${mode === 'register' ? '<label>Name<input type="text" id="aName" placeholder="Ihr Name"></label>' : ''}
+        <label>E-Mail<input type="email" id="aEmail" placeholder="name@buero.de" autocomplete="email"></label>
+        <label>Passwort<input type="password" id="aPw" placeholder="mind. 6 Zeichen" autocomplete="current-password"></label>
+        <p class="muted small auth-err" id="aErr"></p>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" id="aCancel">Abbrechen</button>
+          <button class="btn btn-primary" id="aGo">${mode === 'login' ? 'Anmelden' : 'Konto erstellen'}</button>
+        </div>
+        <p class="muted small">Ihre Objekte, Anfragen und Termine werden dann sicher auf dem Server gespeichert und über Geräte hinweg synchronisiert.</p>
+      </div>`;
+    modal.querySelectorAll('.auth-tab').forEach((t) => t.addEventListener('click', () => { mode = t.dataset.mode; render(); }));
+    $('#aCancel', modal).addEventListener('click', close);
+    $('#aGo', modal).addEventListener('click', submit);
+  }
+  async function submit() {
+    const email = $('#aEmail', modal).value.trim();
+    const pw = $('#aPw', modal).value;
+    const name = mode === 'register' ? ($('#aName', modal) ? $('#aName', modal).value : '') : '';
+    const err = $('#aErr', modal);
+    const btn = $('#aGo', modal);
+    err.textContent = ''; btn.disabled = true;
+    try {
+      if (mode === 'register') await MaklerCloud.register(email, pw, name);
+      else await MaklerCloud.login(email, pw);
+      const serverState = await MaklerCloud.pull();
+      if (serverState) MaklerApp.applyState(serverState);
+      else MaklerCloud.push(MaklerApp.getState()); // erstes Login: lokalen Stand übernehmen
+      renderAuth();
+      close();
+      toast(mode === 'register' ? 'Konto erstellt – willkommen!' : 'Angemeldet.');
+    } catch (e) {
+      err.textContent = e.message; btn.disabled = false;
+    }
+  }
+  modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+  document.addEventListener('keydown', function esc(e) { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); } });
+  document.body.appendChild(modal);
+  render();
+}
+
 /* --- App-Hülle (Sidebar + Topbar) aufbauen -------------------------------- */
 function buildShell() {
   const nav = [
@@ -534,7 +610,7 @@ function buildShell() {
       <nav class="nav">${nav.map(([v, label, ic]) => `<button class="nav-item ${v === 'dashboard' ? 'active' : ''}" data-view="${v}">${icon(ic)}<span>${label}</span></button>`).join('')}</nav>
       <div class="sidebar-foot">
         <button class="nav-item subtle" id="resetBtn">${icon('refresh')}<span>Demo zurücksetzen</span></button>
-        <div class="agent"><span class="avatar">${icon('user')}</span><div><strong>Max Maklermann</strong><span class="muted small">Immobilien München</span></div></div>
+        <div id="authArea"></div>
       </div>
     </aside>
     <div class="main-wrap">
@@ -566,7 +642,13 @@ function buildShell() {
   ]);
   $('#cmdTrigger').addEventListener('click', () => palette.show());
 
+  renderAuth();
   navigate('dashboard');
+
+  // Bei bestehender Anmeldung den Server-Zustand laden.
+  if (window.MaklerCloud && MaklerCloud.isLoggedIn()) {
+    MaklerCloud.pull().then((s) => { if (s) MaklerApp.applyState(s); }).catch(() => {});
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -1,2 +1,8 @@
 .claude/skills/*/scripts/__pycache__/
 *.pyc
+
+# ImmoAssist Laufzeitdaten
+/data/
+server/node_modules/
+server/.env
+server/data.json

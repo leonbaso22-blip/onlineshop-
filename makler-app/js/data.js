@@ -176,7 +176,10 @@ function loadState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(seed));
   return seed;
 }
-function saveState(state) { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+function saveState(state) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  if (window.MaklerCloud && window.MaklerCloud.isLoggedIn()) window.MaklerCloud.push(state);
+}
 function resetState() { localStorage.removeItem(STORAGE_KEY); return loadState(); }
 
 const STATUS_FLOW = ['neu', 'in Kontakt', 'Besichtigung geplant', 'Angebot', 'abgeschlossen', 'verloren'];

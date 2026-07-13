@@ -250,7 +250,7 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Termine & Kalender</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Bis zu 25 Objekte</li>
         </ul>
-        <a class="btn btn-ghost" href="index.html">Testen</a>
+        <button class="btn btn-ghost" data-plan="solo">Testen</button>
       </div>
       <div class="plan feat-plan">
         <span class="tag">Beliebt</span>
@@ -263,7 +263,7 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Exposé-Generator & Analysen</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Unbegrenzte Objekte</li>
         </ul>
-        <a class="btn btn-primary" href="index.html">14 Tage gratis</a>
+        <button class="btn btn-primary" data-plan="pro">14 Tage gratis</button>
       </div>
       <div class="plan">
         <h3>Team</h3>
@@ -275,7 +275,7 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Gemeinsamer Posteingang</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg> Persönliches Onboarding</li>
         </ul>
-        <a class="btn btn-ghost" href="index.html">Beratung anfragen</a>
+        <button class="btn btn-ghost" data-plan="team">Beratung anfragen</button>
       </div>
     </div>
     <p class="note" style="text-align:center;margin-top:18px">Demo-Preise. Beträge dienen der Veranschaulichung des Geschäftsmodells.</p>
@@ -310,8 +310,14 @@
 <footer>
   <div class="wrap foot-in">
     <div class="brand"><span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22v-4h6v4"/></svg></span>ImmoAssist</div>
-    <div>© 2026 ImmoAssist · Demo-Projekt · <a href="index.html" style="color:var(--primary)">Zur App</a></div>
+    <div style="display:flex;gap:18px;flex-wrap:wrap;align-items:center">
+      <a href="index.html" style="color:var(--primary)">Zur App</a>
+      <a href="impressum.html">Impressum</a>
+      <a href="datenschutz.html">Datenschutz</a>
+      <a href="agb.html">AGB</a>
+    </div>
   </div>
+  <div class="wrap" style="margin-top:14px"><div class="note">© 2026 ImmoAssist · Demo-Projekt</div></div>
 </footer>
 
 <script>
@@ -324,6 +330,23 @@
     function tick(){ if(i<full.length){ el.textContent = full.slice(0, i+=2); setTimeout(tick, 18);} }
     setTimeout(tick, 700);
   })();
+
+  // Preis-Buttons: Stripe-Checkout starten, sonst zur Demo führen.
+  document.querySelectorAll('[data-plan]').forEach(function(btn){
+    btn.addEventListener('click', async function(){
+      var plan = btn.getAttribute('data-plan');
+      btn.disabled = true; var orig = btn.textContent; btn.textContent = 'Einen Moment …';
+      try {
+        var res = await fetch('/api/checkout', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ plan: plan }) });
+        var data = await res.json();
+        if (data && data.url) { window.location.href = data.url; return; }
+        // Kein Stripe konfiguriert → direkt zur (kostenlosen) Demo.
+        window.location.href = 'index.html';
+      } catch (e) {
+        window.location.href = 'index.html'; // kein Backend → Demo öffnen
+      } finally { btn.disabled = false; btn.textContent = orig; }
+    });
+  });
 </script>
 </body>
 </html>
