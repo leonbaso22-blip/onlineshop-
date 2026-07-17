@@ -70,4 +70,22 @@ Die „Bilder" werden aus `art` generiert (siehe `js/illustrations.js`):
 | `strap`    | `color`                                | Trageband                 |
 | `brush`    | –                                      | Reinigungsbürste          |
 | `lid`      | `cap`, `pod`                           | Ersatzdeckel              |
-```
+
+---
+
+## 🎮 Bonus: „Straßenheld" – das Fahrzeug-Ausweichspiel
+
+Ein kleines Arcade-Spiel im gleichen flachen Vektor-Look wie der Shop
+(Crossy-Road- / Frogger-Prinzip): Hüpf die air-up-Flasche Reihe für Reihe
+über die Straße und weiche dem Verkehr aus.
+
+- 🚗 **Verschiedene Fahrzeuge** – Auto, LKW, Bus und Zug (mit blinkender Bahnschranke)
+- 🌳 Bäume blockieren einzelne Felder, Gras-Reihen sind sicher
+- ⚡ **Steigende Schwierigkeit** – je weiter du kommst, desto schneller wird der Verkehr
+- 🏆 **Bestwert** bleibt per `localStorage` erhalten
+- 🎨 Alles Vektor auf `<canvas>`, kein Build, komplett offline
+- 🕹️ **Steuerung:** Pfeiltasten oder `WASD`; am Handy wischen, tippen oder Steuerkreuz
+
+Starten: `game.html` im Browser öffnen (oder über den lokalen Server unter `/game.html`).
+
+Dateien: `game.html`, `css/game.css`, `js/game.js`.
