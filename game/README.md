@@ -3,7 +3,8 @@
 Ein **Zwei-Spieler-Koop-Spiel** im Stil von *„Change Together"* / *Fireboy & Watergirl* –
 reines HTML5 Canvas + JavaScript, **kein Build-Schritt, komplett offline lauffähig**.
 
-Zwei Figuren teilen sich eine Tastatur und müssen **gemeinsam** vier Biome durchqueren.
+Zwei Figuren **auf Rollern 🛴** teilen sich eine Tastatur und müssen **gemeinsam**
+vier Biome durchqueren. Sie laufen nicht – sie fahren (mit drehenden Rädern).
 Nur im Team erreichen beide gleichzeitig ihre Tür und schaffen das Level.
 
 ## Starten
@@ -17,7 +18,7 @@ python3 -m http.server 8000
 
 ## Steuerung
 
-| Figur            | Bewegen        | Springen |
+| Figur            | Fahren         | Springen |
 |------------------|----------------|----------|
 | 🔥 **Lumen** (Feuer) | `A` / `D`      | `W`      |
 | 💧 **Aqua** (Wasser) | `◀` / `▶`      | `▲`      |

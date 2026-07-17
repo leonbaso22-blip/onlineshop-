@@ -257,6 +257,7 @@
       facing: 1,
       atExit: false,
       anim: 0,
+      wheel: 0,
     };
   }
 
@@ -305,6 +306,7 @@
     for (const pl of players) {
       stepPlayer(pl);
       pl.anim += Math.abs(pl.vx) * 0.15 + 0.04;
+      pl.wheel += pl.vx * 0.14;   // Räder drehen sich mit der Fahrt
 
       // Edelsteine einsammeln
       for (const g of gems) {
@@ -790,66 +792,120 @@
     for (const pl of players) drawPlayer(pl);
   }
 
+  function drawWheel(wx, wy, ang) {
+    ctx.save();
+    ctx.translate(wx, wy);
+    ctx.fillStyle = "#22252f";                       // Reifen
+    ctx.beginPath(); ctx.arc(0, 0, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = "#8b909c"; ctx.lineWidth = 1;  // Speichen (drehend)
+    for (let i = 0; i < 3; i++) {
+      const a = ang + i * (Math.PI / 3);
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(a) * 1.5, Math.sin(a) * 1.5);
+      ctx.lineTo(Math.cos(a) * 4.3, Math.sin(a) * 4.3);
+      ctx.stroke();
+    }
+    ctx.fillStyle = "#c9ced8";                        // Nabe
+    ctx.beginPath(); ctx.arc(0, 0, 1.8, 0, Math.PI * 2); ctx.fill();
+    ctx.restore();
+  }
+
   function drawPlayer(pl) {
     const isLumen = pl.type === "lumen";
     const body = isLumen ? "#ff7a3c" : "#36b8ff";
     const dark = isLumen ? "#d8542a" : "#1f8fd6";
     const glow = isLumen ? "#ffb066" : "#8fe0ff";
+    const deckCol = isLumen ? "#b23c1c" : "#166a9e";  // Roller-Rahmen
     const x = pl.x, y = pl.y, w = pl.w, h = pl.h;
-    const bob = pl.onGround ? Math.sin(pl.anim) * 1.2 : 0;
+    const dir = pl.facing >= 0 ? 1 : -1;
+    const cx = x + w / 2;
+    const bob = pl.onGround ? Math.sin(pl.anim) * 0.8 : 0;
+    const wheelAng = pl.wheel || 0;
+
+    const backWX = cx - dir * 7, frontWX = cx + dir * 7;
+    const wheelY = y + h - 3;    // Räder am Boden
+    const deckY = y + h - 7;     // Trittbrett-Oberkante
 
     ctx.save();
+
     // Schatten
     ctx.fillStyle = "rgba(0,0,0,0.22)";
     ctx.beginPath();
-    ctx.ellipse(x + w / 2, y + h, w * 0.5, 5, 0, 0, Math.PI * 2);
+    ctx.ellipse(cx, y + h + 1, w * 0.52, 4, 0, 0, Math.PI * 2);
     ctx.fill();
 
-    // Aura
-    ctx.shadowColor = glow;
-    ctx.shadowBlur = 16;
+    // ---- Roller ----
+    drawWheel(backWX, wheelY, wheelAng);
+    drawWheel(frontWX, wheelY, wheelAng);
 
-    // Körper
+    // Trittbrett
+    ctx.fillStyle = deckCol;
+    roundRect(cx - 8, deckY, 16, 4, 2); ctx.fill();
+
+    // Lenkstange + Lenker (auf der Fahrtrichtungsseite)
+    ctx.strokeStyle = deckCol; ctx.lineWidth = 3; ctx.lineCap = "round";
+    ctx.beginPath();
+    ctx.moveTo(frontWX, deckY + 1);
+    ctx.lineTo(frontWX, y + 6 + bob);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(frontWX - 4, y + 6 + bob);
+    ctx.lineTo(frontWX + 4, y + 6 + bob);
+    ctx.stroke();
+
+    // ---- Fahrer (Element-Figur) auf dem Trittbrett ----
+    const bx = cx - dir * 1;
+    const bw = 15, bTop = y + 2 + bob, bBot = deckY;
+    const bh = bBot - bTop;
+    ctx.shadowColor = glow; ctx.shadowBlur = 14;
     ctx.fillStyle = body;
-    roundRect(x, y + bob, w, h, 9); ctx.fill();
+    roundRect(bx - bw / 2, bTop, bw, bh, 7); ctx.fill();
     ctx.shadowBlur = 0;
     ctx.fillStyle = dark;
-    roundRect(x, y + h * 0.6 + bob, w, h * 0.4, 9); ctx.fill();
+    roundRect(bx - bw / 2, bTop + bh * 0.62, bw, bh * 0.38, 7); ctx.fill();
     ctx.fillStyle = body;
-    roundRect(x, y + bob, w, h * 0.62, 9); ctx.fill();
+    roundRect(bx - bw / 2, bTop, bw, bh * 0.66, 7); ctx.fill();
+
+    // Arm zum Lenker
+    ctx.strokeStyle = dark; ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(bx + dir * 3, bTop + 9);
+    ctx.lineTo(frontWX, y + 7 + bob);
+    ctx.stroke();
+    ctx.lineWidth = 1;
 
     // Element-Krone
     if (isLumen) {
       ctx.fillStyle = "#ffd24d";
       for (let i = 0; i < 3; i++) {
-        const fx = x + 5 + i * 7;
-        const fh = 8 + Math.sin(time * 9 + i) * 3;
+        const fx = bx - 6 + i * 6;
+        const fh = 7 + Math.sin(time * 9 + i) * 3;
         ctx.beginPath();
-        ctx.moveTo(fx, y + bob);
-        ctx.quadraticCurveTo(fx + 3, y - fh + bob, fx + 6, y + bob);
+        ctx.moveTo(fx, bTop);
+        ctx.quadraticCurveTo(fx + 3, bTop - fh, fx + 6, bTop);
         ctx.closePath(); ctx.fill();
       }
     } else {
       ctx.fillStyle = "#bfeaff";
-      const dx = x + w / 2 + Math.sin(time * 3) * 2;
+      const dxx = bx + Math.sin(time * 3) * 2;
       ctx.beginPath();
-      ctx.moveTo(dx, y - 6 + bob);
-      ctx.quadraticCurveTo(dx + 5, y + 2 + bob, dx, y + 4 + bob);
-      ctx.quadraticCurveTo(dx - 5, y + 2 + bob, dx, y - 6 + bob);
+      ctx.moveTo(dxx, bTop - 7);
+      ctx.quadraticCurveTo(dxx + 5, bTop + 1, dxx, bTop + 3);
+      ctx.quadraticCurveTo(dxx - 5, bTop + 1, dxx, bTop - 7);
       ctx.closePath(); ctx.fill();
     }
 
     // Augen
     ctx.fillStyle = "#fff";
-    const eo = pl.facing > 0 ? 2 : -2;
+    const eo = dir * 1.5, eyeY = bTop + 10;
     ctx.beginPath();
-    ctx.arc(x + w * 0.34 + eo, y + 13 + bob, 4, 0, Math.PI * 2);
-    ctx.arc(x + w * 0.66 + eo, y + 13 + bob, 4, 0, Math.PI * 2);
+    ctx.arc(bx - 3 + eo, eyeY, 3.3, 0, Math.PI * 2);
+    ctx.arc(bx + 3 + eo, eyeY, 3.3, 0, Math.PI * 2);
     ctx.fill();
     ctx.fillStyle = "#1a1f33";
     ctx.beginPath();
-    ctx.arc(x + w * 0.34 + eo + pl.facing, y + 13 + bob, 2, 0, Math.PI * 2);
-    ctx.arc(x + w * 0.66 + eo + pl.facing, y + 13 + bob, 2, 0, Math.PI * 2);
+    ctx.arc(bx - 3 + eo + dir, eyeY, 1.7, 0, Math.PI * 2);
+    ctx.arc(bx + 3 + eo + dir, eyeY, 1.7, 0, Math.PI * 2);
     ctx.fill();
 
     // "Geschafft"-Häkchen
@@ -857,7 +913,7 @@
       ctx.fillStyle = "#7CFFB0";
       ctx.font = "bold 14px sans-serif";
       ctx.textAlign = "center";
-      ctx.fillText("✓", x + w / 2, y - 10 + bob);
+      ctx.fillText("✓", cx, y - 8 + bob);
     }
     ctx.restore();
   }
@@ -925,8 +981,8 @@
     showOverlay(`
       <h1>Change&nbsp;Together</h1>
       <p>Ein Koop-Abenteuer für <b>zwei Spieler an einer Tastatur</b>.
-         Bringt <b>Lumen</b> und <b>Aqua</b> gemeinsam durch vier Biome –
-         nur im Team erreicht ihr beide Türen.</p>
+         <b>Lumen</b> und <b>Aqua</b> flitzen auf ihren <b>Rollern 🛴</b>
+         gemeinsam durch vier Biome – nur im Team erreicht ihr beide Türen.</p>
       <div class="legend">
         <div class="row"><span class="swatch" style="background:#ff7a3c"></span> 🔥 Lumen — <kbd>A</kbd><kbd>D</kbd><kbd>W</kbd></div>
         <div class="row"><span class="swatch" style="background:#36b8ff"></span> 💧 Aqua — <kbd>◀</kbd><kbd>▶</kbd><kbd>▲</kbd></div>
